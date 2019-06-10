@@ -34,8 +34,8 @@
 struct PIDInfo
 {
 	std::string name;
-	Control::PID::Parameters params;
-	PIDInfo(std::string n, Control::PID::Parameters p) :
+	PIDParameter params;
+	PIDInfo(std::string n, PIDParameter p) :
 			name(n), params(p)
 	{
 	}

@@ -333,7 +333,7 @@ ConfigManager::setPIDMap(const std::string& path)
 				APLOG_WARN << "Airplane PID name " << it.first << " invalid.";
 				continue;
 			}
-			Control::PID::Parameters params;
+			PIDParameter params;
 			params.configure(it.second);
 
 			PIDInfo info(it.first, params);

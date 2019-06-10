@@ -20,7 +20,7 @@
 #include "ui_PIDConfigPlot.h"
 
 PIDConfigPlot::PIDConfigPlot(QWidget *parent, int key, std::string name,
-		const Control::PID::Parameters &param) :
+		const PIDParameter &param) :
 		QWidget(parent), ui(new Ui::PIDConfigPlot), key_(key)
 {
 	ui->setupUi(this);
@@ -133,7 +133,7 @@ PIDConfigPlot::setIMax(double iMax)
 void
 PIDConfigPlot::on_send_clicked()
 {
-	Control::PID::Parameters a;
+	PIDParameter a;
 	a.kp = ui->kP->text().toDouble();
 	a.ki = ui->kI->text().toDouble();
 	a.kd = ui->kD->text().toDouble();
