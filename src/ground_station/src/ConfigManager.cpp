@@ -323,7 +323,7 @@ ConfigManager::setPIDMap(const std::string& path)
 	try
 	{
 		auto controllerConf = conf.get_child("controller");
-		auto pidConf = controllerConf.get_child("pids");
+		auto pidConf = controllerConf.get_child("pid_controllers");
 
 		for (auto& it : pidConf)
 		{
