@@ -249,10 +249,16 @@
 				"kp": 1
 			}
 		},
+		"controller_deflections": {
+			"roll": 15.0,
+			"pitch": 15.0,
+			"yaw": 15.0,
+			"throttle": 1.0
+		},
 		"controller_saturations": {
 			"roll": {
 				"hard": 45.0,
-				"soft": 10.0
+				"soft": 30.0
 			},
 			"roll_rate": {
 				"hard": 100.0,
