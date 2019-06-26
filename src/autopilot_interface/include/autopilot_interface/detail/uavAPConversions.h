@@ -69,6 +69,8 @@ apToRos(const SensorData& sd)
 
 	data.header.stamp = ros::Time::fromBoost(sd.timestamp);
 
+	data.autopilot_active = sd.autopilotActive;
+
 	data.battery_voltage = sd.batteryVoltage;
 	data.battery_current = sd.batteryCurrent;
 	data.aileron = sd.aileron;
@@ -96,7 +98,7 @@ rosToAp(const simulation_interface::sensor_data& sd)
 
 	data.timestamp = sd.header.stamp.toBoost();
 	data.hasGPSFix = true;
-	data.autopilotActive = true;
+	data.autopilotActive = sd.autopilot_active;
 
 	data.batteryVoltage = sd.battery_voltage;
 	data.batteryCurrent = sd.battery_current;

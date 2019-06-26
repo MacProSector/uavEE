@@ -193,6 +193,8 @@ XPlaneRosNode::getSensorData()
 	sd.velocity.linear.y = -static_cast<double>(XPLMGetDataf(velocityRefs_[2]));
 	sd.velocity.linear.z = static_cast<double>(XPLMGetDataf(velocityRefs_[1]));
 
+	sd.autopilot_active = autopilotActive_;
+
 	sd.ground_speed = sqrt(pow(sd.velocity.linear.x,2) + pow(sd.velocity.linear.y,2) + pow(sd.velocity.linear.z,2));
 	sd.air_speed = static_cast<double>(XPLMGetDataf(trueAirSpeedRef_));
 

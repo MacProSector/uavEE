@@ -130,6 +130,28 @@ WidgetSensorData::onSensorData(const simulation_interface::sensor_data& data)
 	t.sprintf("%10.5f", sd.angularRate.z() * 180 / M_PI);
 	ui->yawrValue->setText(t);
 
+	if (sd.hasGPSFix)
+	{
+		t.sprintf("      True");
+	}
+	else
+	{
+		t.sprintf("      False");
+	}
+
+	ui->gpsFixValue->setText(t);
+
+	if (sd.autopilotActive)
+	{
+		t.sprintf("      True");
+	}
+	else
+	{
+		t.sprintf("      False");
+	}
+
+	ui->apActiveValue->setText(t);
+
 	t.sprintf("%10.5f", sd.batteryVoltage);
 	ui->voltValue->setText(t);
 
