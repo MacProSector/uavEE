@@ -78,7 +78,7 @@
 		"use_approach": false,
 		"default_velocity": 50,
 		"missions": {
-			"simple_mission": {
+			"simple": {
 				"velocity": 50,
 				"infinite": true,
 				"offset": {
@@ -109,7 +109,7 @@
 					}
 				]
 			},
-			"validation_mission": {
+			"validation": {
 				"velocity": 50,
 				"infinite": true,
 				"offset": {
