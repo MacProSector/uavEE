@@ -79,10 +79,13 @@ private:
 
 	XPLMDataRef positionRefs_[3];
 	XPLMDataRef velocityRefs_[3];
-	XPLMDataRef trueAirSpeedRef_;
 	XPLMDataRef accelerationRefs_[3];
 	XPLMDataRef attitudeRefs_[3];
 	XPLMDataRef angularRateRefs_[3];
+	XPLMDataRef trueAirSpeedRef_;
+	XPLMDataRef gpsPowerRef_;
+	XPLMDataRef angleOfAttackRef_;
+	XPLMDataRef angleOfSideslipRef_;
 	XPLMDataRef batteryVoltageRef_;
 	XPLMDataRef batteryCurrentRef_;
 	XPLMDataRef aileronRef_;

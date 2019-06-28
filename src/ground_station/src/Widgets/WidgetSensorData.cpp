@@ -121,6 +121,12 @@ WidgetSensorData::onSensorData(const simulation_interface::sensor_data& data)
 	t.sprintf("%10.5f", sd.attitude.z() * 180 / M_PI);
 	ui->yawValue->setText(t);
 
+	t.sprintf("%10.5f", sd.angleOfAttack * 180 / M_PI);
+	ui->alphaValue->setText(t);
+
+	t.sprintf("%10.5f", sd.angleOfSideslip * 180 / M_PI);
+	ui->betaValue->setText(t);
+
 	t.sprintf("%10.5f", sd.angularRate.x() * 180 / M_PI);
 	ui->rollrValue->setText(t);
 

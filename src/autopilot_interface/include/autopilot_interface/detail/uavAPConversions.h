@@ -58,19 +58,18 @@ apToRos(const SensorData& sd)
 {
 	simulation_interface::sensor_data data;
 
+	data.header.stamp = ros::Time::fromBoost(sd.timestamp);
 	data.position = Vector3ToXYZType<geometry_msgs::Point>(sd.position);
-	data.attitude = Vector3ToXYZType<geometry_msgs::Vector3>(sd.attitude);
 	data.velocity.linear = Vector3ToXYZType<geometry_msgs::Vector3>(sd.velocity);
 	data.velocity.angular = Vector3ToXYZType<geometry_msgs::Vector3>(sd.angularRate);
 	data.acceleration.linear = Vector3ToXYZType<geometry_msgs::Vector3>(sd.acceleration);
-
+	data.attitude = Vector3ToXYZType<geometry_msgs::Vector3>(sd.attitude);
 	data.air_speed = sd.airSpeed;
 	data.ground_speed = sd.groundSpeed;
-
-	data.header.stamp = ros::Time::fromBoost(sd.timestamp);
-
+	data.has_gps_fix = sd.hasGPSFix;
 	data.autopilot_active = sd.autopilotActive;
-
+	data.angle_of_attack = sd.angleOfAttack;
+	data.angle_of_sideslip = sd.angleOfSideslip;
 	data.battery_voltage = sd.batteryVoltage;
 	data.battery_current = sd.batteryCurrent;
 	data.aileron = sd.aileron;
@@ -88,18 +87,17 @@ rosToAp(const simulation_interface::sensor_data& sd)
 	SensorData data;
 
 	data.position = xyzTypeToVector3(sd.position);
-	data.attitude = xyzTypeToVector3(sd.attitude);
 	data.velocity = xyzTypeToVector3(sd.velocity.linear);
-	data.angularRate = xyzTypeToVector3(sd.velocity.angular);
 	data.acceleration = xyzTypeToVector3(sd.acceleration.linear);
-
-	data.groundSpeed = sd.ground_speed;
-	data.airSpeed = sd.air_speed;
-
+	data.attitude = xyzTypeToVector3(sd.attitude);
+	data.angularRate = xyzTypeToVector3(sd.velocity.angular);
 	data.timestamp = sd.header.stamp.toBoost();
-	data.hasGPSFix = true;
+	data.airSpeed = sd.air_speed;
+	data.groundSpeed = sd.ground_speed;
+	data.hasGPSFix = sd.has_gps_fix;
 	data.autopilotActive = sd.autopilot_active;
-
+	data.angleOfAttack = sd.angle_of_attack;
+	data.angleOfSideslip = sd.angle_of_sideslip;
 	data.batteryVoltage = sd.battery_voltage;
 	data.batteryCurrent = sd.battery_current;
 	data.aileron = sd.aileron;

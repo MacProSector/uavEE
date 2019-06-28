@@ -1,12 +1,15 @@
 Header header
 geometry_msgs/Point position
-geometry_msgs/Vector3 attitude
 geometry_msgs/Twist velocity
 geometry_msgs/Accel acceleration
+geometry_msgs/Vector3 attitude
 float64 air_speed
 float64 ground_speed
 uint32 sequenceNr
+bool has_gps_fix
 bool autopilot_active
+float64 angle_of_attack
+float64 angle_of_sideslip
 float64 battery_voltage
 float64 battery_current
 float64 aileron
