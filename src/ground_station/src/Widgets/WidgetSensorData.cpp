@@ -71,7 +71,7 @@ WidgetSensorData::onSensorData(const simulation_interface::sensor_data& data)
 
 	SensorData sd = rosToAp(data);
 
-	if (ui->earthFrameCheckBox->isChecked())
+	if (ui->frameEarthRadioButton->isChecked())
 	{
 		changeFrame(localFrame_, InertialFrame(), sd);
 	}
