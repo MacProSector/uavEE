@@ -129,4 +129,6 @@ WidgetPFD::setupUi()
 	m_layoutSq->addWidget(m_ui->framePFD);
 
 	this->setLayout(m_layoutSq);
+
+	QWidget::setFixedWidth(QWidget::height());
 }

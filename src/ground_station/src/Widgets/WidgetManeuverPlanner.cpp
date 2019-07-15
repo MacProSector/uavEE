@@ -164,6 +164,8 @@ WidgetManeuverPlanner::configure(const boost::property_tree::ptree& config)
 
 	std::string overrideGroup;
 
+	unsigned counter = 0;
+
 	for (const auto& it : config)
 	{
 		overrideGroup = it.first;
@@ -213,6 +215,7 @@ WidgetManeuverPlanner::configure(const boost::property_tree::ptree& config)
 		}
 	}
 
+	counter = 0;
 	QVBoxLayout* layoutLP = new QVBoxLayout;
 	layoutLP->setMargin(2);
 	layoutLP->setSpacing(0);
@@ -224,9 +227,19 @@ WidgetManeuverPlanner::configure(const boost::property_tree::ptree& config)
 				ui->localPlannerGroup);
 		localPlannerTargets_.insert(std::make_pair(it, edit));
 		layoutLP->addWidget(edit);
+		counter ++;
 	}
-	ui->localPlannerGroup->setLayout(layoutLP);
+	if (counter == 0)
+	{
+		delete layoutLP;
+		ui->localPlannerGroup->setHidden(true);
+	}
+	else
+	{
+		ui->localPlannerGroup->setLayout(layoutLP);
+	}
 
+	counter = 0;
 	QVBoxLayout* layoutCT = new QVBoxLayout;
 	layoutCT->setMargin(2);
 	layoutCT->setSpacing(0);
@@ -238,9 +251,19 @@ WidgetManeuverPlanner::configure(const boost::property_tree::ptree& config)
 				ui->controllerTargetsGroup);
 		controllerTargets_.insert(std::make_pair(it, edit));
 		layoutCT->addWidget(edit);
+		counter ++;
 	}
-	ui->controllerTargetsGroup->setLayout(layoutCT);
+	if (counter == 0)
+	{
+		delete layoutCT;
+		ui->controllerTargetsGroup->setHidden(true);
+	}
+	else
+	{
+		ui->controllerTargetsGroup->setLayout(layoutCT);
+	}
 
+	counter = 0;
 	QVBoxLayout* layoutPid = new QVBoxLayout;
 	layoutPid->setMargin(2);
 	layoutPid->setSpacing(0);
@@ -251,9 +274,19 @@ WidgetManeuverPlanner::configure(const boost::property_tree::ptree& config)
 		auto edit = new NamedLineEdit(EnumMap<PIDs>::convert(it), ui->pidsGroup);
 		pids_.insert(std::make_pair(it, edit));
 		layoutPid->addWidget(edit);
+		counter ++;
 	}
-	ui->pidsGroup->setLayout(layoutPid);
+	if (counter == 0)
+	{
+		delete layoutPid;
+		ui->pidsGroup->setHidden(true);
+	}
+	else
+	{
+		ui->pidsGroup->setLayout(layoutPid);
+	}
 
+	counter = 0;
 	QVBoxLayout* layoutOut = new QVBoxLayout;
 	layoutOut->setMargin(2);
 	layoutOut->setSpacing(0);
@@ -264,9 +297,19 @@ WidgetManeuverPlanner::configure(const boost::property_tree::ptree& config)
 		auto edit = new NamedLineEdit(EnumMap<ControllerOutputs>::convert(it), ui->outputsGroup);
 		controllerOutputs_.insert(std::make_pair(it, edit));
 		layoutOut->addWidget(edit);
+		counter ++;
 	}
-	ui->outputsGroup->setLayout(layoutOut);
+	if (counter == 0)
+	{
+		delete layoutOut;
+		ui->outputsGroup->setHidden(true);
+	}
+	else
+	{
+		ui->outputsGroup->setLayout(layoutOut);
+	}
 
+	counter = 0;
 	QVBoxLayout* layoutConstraints = new QVBoxLayout;
 	layoutConstraints->setMargin(2);
 	layoutConstraints->setSpacing(0);
@@ -277,9 +320,19 @@ WidgetManeuverPlanner::configure(const boost::property_tree::ptree& config)
 		auto edit = new NamedLineEdit(EnumMap<ControllerConstraints>::convert(it), ui->constraintsGroup);
 		controllerConstraints_.insert(std::make_pair(it, edit));
 		layoutConstraints->addWidget(edit);
+		counter ++;
 	}
-	ui->constraintsGroup->setLayout(layoutConstraints);
+	if (counter == 0)
+	{
+		delete layoutConstraints;
+		ui->constraintsGroup->setHidden(true);
+	}
+	else
+	{
+		ui->constraintsGroup->setLayout(layoutConstraints);
+	}
 
+	counter = 0;
 	QVBoxLayout* layoutCustom = new QVBoxLayout;
 	layoutCustom->setMargin(2);
 	layoutCustom->setSpacing(0);
@@ -290,8 +343,17 @@ WidgetManeuverPlanner::configure(const boost::property_tree::ptree& config)
 		auto edit = new NamedLineEdit(EnumMap<CustomOverrideIDs>::convert(it), ui->customGroup);
 		custom_.insert(std::make_pair(it, edit));
 		layoutCustom->addWidget(edit);
+		counter ++;
 	}
-	ui->customGroup->setLayout(layoutCustom);
+	if (counter == 0)
+	{
+		delete layoutCustom;
+		ui->customGroup->setHidden(true);
+	}
+	else
+	{
+		ui->customGroup->setLayout(layoutCustom);
+	}
 
 	return pm.map();
 }
