@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>166</width>
-    <height>56</height>
+    <width>274</width>
+    <height>53</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,26 +20,8 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <item row="1" column="0">
+   <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
      <item>
       <layout class="QGridLayout" name="gridLayout">
        <property name="spacing">
@@ -48,17 +30,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="sendAllParams">
-       <property name="text">
-        <string>Apply All PID Configs</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
        <item>
         <widget class="QPushButton" name="saveGains">
          <property name="sizePolicy">
@@ -68,14 +40,21 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>Save Gains</string>
+          <string>Save Gain</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="sendAllParams">
+         <property name="text">
+          <string>Apply All</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="loadGains">
          <property name="text">
-          <string>Load Gains</string>
+          <string>Load Gain</string>
          </property>
         </widget>
        </item>
