@@ -1,5 +1,5 @@
 {
-	"geofencing": {
+	"emergency_geofencing_planner": {
 		"roll_max": 45,
 		"evaluation_threshold": 150,
 		"distance_threshold": 10,
@@ -11,6 +11,10 @@
 		"roll_max": 45,
 		"precision": 32
 	},
+	"global_planner": {
+		"type": "spline",
+		"tau": 0.6
+	},
 	"local_frame": {
 		"origin": [
 			367836.57,
@@ -18,10 +22,6 @@
 			168
 		],
 		"yaw": 47
-	},
-	"global_planner": {
-		"type": "spline",
-		"tau": 0.6
 	},
 	"maneuver_planner": {
 		"safety_bounds": {
