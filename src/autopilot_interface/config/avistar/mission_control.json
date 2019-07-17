@@ -48,13 +48,13 @@
 					"override": {
 						"local_planner/position_z": 150.0,
 						"local_planner/velocity": 20.0,
-						"pids/roll": 0.0
+						"local_planner/heading": 0.0
 					},
 					"condition": {
 						"type": "steady_state",
 						"steady_state": true
 					},
-					"analyze_maneuver": false,
+					"analyze_maneuver": true,
 					"analyze_trim": false
 				},
 				{
@@ -76,7 +76,7 @@
 					"override": {
 						"local_planner/position_z": 150.0,
 						"local_planner/velocity": 20.0,
-						"pids/roll": 0.0
+						"local_planner/heading": 0.0
 					},
 					"condition": {
 						"type": "steady_state",
@@ -88,7 +88,9 @@
 					"override": {
 						"local_planner/position_z": 150.0,
 						"pids/roll": 0.0,
-						"controller_outputs/throttle": -1.0
+						"controller_outputs/throttle": -1.0,
+						"controller_constraints/pitch": 45.0,
+						"controller_constraints/pitch_rate": 100.0
 					},
 					"condition": {
 						"type": "sensor_data",
@@ -109,7 +111,9 @@
 					"override": {
 						"local_planner/position_z": 150.0,
 						"pids/roll": 0.0,
-						"controller_outputs/throttle": -1.0
+						"controller_outputs/throttle": -1.0,
+						"controller_constraints/pitch": 45.0,
+						"controller_constraints/pitch_rate": 100.0
 					},
 					"condition": {
 						"type": "sensor_data",
