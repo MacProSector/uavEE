@@ -6,7 +6,7 @@
 		"period": 50
 	},
 	"geofencing_model": {
-		"type": "roll_rate",
+		"type": "const_roll_rate",
 		"roll_rate": 18,
 		"roll_max": 45,
 		"precision": 32
