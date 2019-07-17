@@ -1,4 +1,8 @@
 {
+	"global_planner": {
+		"type": "spline",
+		"tau": 0.6
+	},
 	"local_frame": {
 		"origin": [
 			366990.057,
@@ -6,10 +10,6 @@
 			224
 		],
 		"yaw": 0
-	},
-	"global_planner": {
-		"type": "spline",
-		"tau": 0.6
 	},
 	"maneuver_planner": {
 		"safety_bounds": {
