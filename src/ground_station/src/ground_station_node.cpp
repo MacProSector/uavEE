@@ -35,7 +35,7 @@
 #include <uavAP/Core/Frames/VehicleOneFrame.h>
 #include <uavAP/Core/Time.h>
 #include <uavAP/Core/Scheduler/IScheduler.h>
-#include <uavAP/FlightAnalysis/StateAnalysis/Metrics.h>
+#include <uavAP/FlightAnalysis/SteadyStateAnalysis/Metrics.h>
 #include <uavAP/MissionControl/GlobalPlanner/Trajectory.h>
 #include <uavAP/MissionControl/MissionPlanner/Mission.h>
 #include <uavAP/MissionControl/ManeuverPlanner/Override.h>

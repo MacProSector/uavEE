@@ -4,7 +4,7 @@
 #include <string>
 #include <QWidget>
 #include <uavAP/Core/Object/ObjectHandle.h>
-#include <uavAP/FlightAnalysis/StateAnalysis/Metrics.h>
+#include <uavAP/FlightAnalysis/SteadyStateAnalysis/Metrics.h>
 #include <uavAP/FlightControl/Controller/PIDController/PIDMapping.h>
 #include <radio_comm/pidstati.h>
 #include <radio_comm/serialized_object.h>

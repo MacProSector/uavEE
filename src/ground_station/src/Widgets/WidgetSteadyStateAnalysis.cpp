@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <uavAP/Core/EnumMap.hpp>
-#include <uavAP/FlightAnalysis/StateAnalysis/Metrics.h>
+#include <uavAP/FlightAnalysis/SteadyStateAnalysis/Metrics.h>
 #include <uavAP/FlightControl/Controller/PIDController/PIDHandling.h>
 #include <uavAP/MissionControl/ManeuverPlanner/Override.h>
 #include <uavAP/Core/DataPresentation/BinarySerialization.hpp>

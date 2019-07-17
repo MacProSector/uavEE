@@ -25,7 +25,7 @@
 
 #include <string>
 #include <boost/property_tree/ptree.hpp>
-#include <uavAP/FlightAnalysis/StateAnalysis/Metrics.h>
+#include <uavAP/FlightAnalysis/SteadyStateAnalysis/Metrics.h>
 #include <uavAP/FlightControl/Controller/ControllerOutput.h>
 #include <uavAP/Core/Frames/VehicleOneFrame.h>
 #include <radio_comm/send_advanced_control.h>

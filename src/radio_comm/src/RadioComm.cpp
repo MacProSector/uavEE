@@ -30,8 +30,8 @@
 #include <uavAP/Core/DataPresentation/ContentMapping.h>
 #include <uavAP/Core/DataPresentation/IDataPresentation.h>
 #include <uavAP/Core/Frames/VehicleOneFrame.h>
-#include <uavAP/FlightAnalysis/StateAnalysis/Metrics.h>
-#include <uavAP/FlightAnalysis/StateAnalysis/SteadyStateAnalysis.h>
+#include <uavAP/FlightAnalysis/SteadyStateAnalysis/Metrics.h>
+#include <uavAP/FlightAnalysis/SteadyStateAnalysis/SteadyStateAnalysis.h>
 #include <uavAP/FlightControl/Controller/AdvancedControl.h>
 #include <uavAP/FlightControl/Controller/PIDController/PIDHandling.h>
 #include <uavAP/FlightControl/Controller/ControllerOutput.h>

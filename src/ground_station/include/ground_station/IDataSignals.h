@@ -29,7 +29,7 @@
 #include <QtCore/QObject>
 #include <uavAP/Core/Frames/VehicleOneFrame.h>
 #include <uavAP/FlightControl/Controller/ControllerOutput.h>
-#include <uavAP/FlightAnalysis/StateAnalysis/Metrics.h>
+#include <uavAP/FlightAnalysis/SteadyStateAnalysis/Metrics.h>
 #include <uavAP/MissionControl/ManeuverPlanner/Override.h>
 #include <simulation_interface/sensor_data.h>
 #include <simulation_interface/actuation.h>

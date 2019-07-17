@@ -30,7 +30,7 @@
 #include <uavAP/Core/DataPresentation/Content.h>
 #include <uavAP/Core/protobuf/messages/LocalPlanner.pb.h>
 #include <uavAP/Core/protobuf/messages/ManeuverPlanner.pb.h>
-#include <uavAP/FlightAnalysis/StateAnalysis/SteadyStateAnalysis.h>
+#include <uavAP/FlightAnalysis/SteadyStateAnalysis/SteadyStateAnalysis.h>
 #include <uavAP/Core/Frames/VehicleOneFrame.h>
 #include <uavAP/Core/DataPresentation/BinarySerialization.hpp>
 #include <radio_comm/select_mission.h>

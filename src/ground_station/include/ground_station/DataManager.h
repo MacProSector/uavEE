@@ -38,7 +38,7 @@
 #include <uavAP/Core/protobuf/messages/LocalPlanner.pb.h>
 #include <uavAP/Core/DataPresentation/ContentMapping.h>
 #include <uavAP/Core/DataPresentation/APDataPresentation/APDataPresentation.h>
-#include <uavAP/FlightAnalysis/StateAnalysis/Metrics.h>
+#include <uavAP/FlightAnalysis/SteadyStateAnalysis/Metrics.h>
 #include <uavAP/MissionControl/GlobalPlanner/PathSections/IPathSection.h>
 #include <radio_comm/serialized_object.h>
 #include <power_modeling/power_info.h>
