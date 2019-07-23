@@ -1,4 +1,36 @@
 {
+	"emergency_landing_planner": {
+		"landing_sites": {
+			"default": {
+				"planning": {
+					"acceleration": 0.15,
+					"climb_rate": 0.3,
+					"yaw_rate": 5,
+					"gliding_velocity": 36,
+					"gliding_climb_angle": -5,
+					"period": 10000
+				},
+				"searching": {
+					"acceleration": 1,
+					"climb_rate": 0.25,
+					"yaw_rate": 5,
+					"loiter_radius": 1000,
+					"loiter_lambda": 23,
+					"line_distance": 2000,
+					"line_delta": 610,
+					"approach_radius": 2500,
+					"approach_altitude": 400
+				},
+				"approaching": {
+					"velocity": 22,
+					"climb_angle": -3,
+					"yaw_angle": 270,
+					"sideslip_angle": 0,
+					"position": [0, 0, 0]
+				}
+			}
+		}
+	},
 	"local_frame": {
 		"origin": [
 			366990.057,

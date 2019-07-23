@@ -163,6 +163,14 @@ XPlaneRosNode::disableAutopilot()
 		XPLMSetDatai(overridesRef_[0], 0);
 		XPLMSetDatai(overridesRef_[1], 0);
 	}
+
+	/* TEST */
+	double x, y, z;
+	XPLMWorldToLocal(40.05, -88.50, 2000, &x, &y, &z);
+	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_x"), x);
+	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_y"), y);
+	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_z"), z);
+	/* TEST */
 }
 
 void
