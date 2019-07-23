@@ -14,12 +14,12 @@
 					"acceleration": 1,
 					"climb_rate": 0.25,
 					"yaw_rate": 5,
+					"cruise_radius": 2500,
 					"loiter_radius": 1000,
 					"loiter_lambda": 23,
+					"approach_altitude": 400,
 					"line_distance": 2000,
-					"line_delta": 610,
-					"approach_radius": 2500,
-					"approach_altitude": 400
+					"line_delta": 610
 				},
 				"approaching": {
 					"velocity": 22,
