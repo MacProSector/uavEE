@@ -5,21 +5,21 @@
 				"planning": {
 					"acceleration": 0.15,
 					"climb_rate": 0.3,
-					"yaw_rate": 12,
+					"yaw_rate": 5,
 					"gliding_velocity": 36,
 					"gliding_climb_angle": -5,
-					"period": 10000
+					"period": 5000
 				},
 				"searching": {
 					"acceleration": 1,
 					"climb_rate": 0.25,
 					"yaw_rate": 5,
-					"cruise_radius": 1050,
-					"loiter_radius": 1000,
+					"cruise_radius": 1100,
+					"loiter_radius": 1015,
 					"loiter_lambda": 23,
-					"approach_altitude": 50,
-					"line_distance": 750,
-					"line_delta": 250
+					"approach_altitude": 500,
+					"line_distance": 760,
+					"line_delta": 255
 				},
 				"approaching": {
 					"velocity": 22,
