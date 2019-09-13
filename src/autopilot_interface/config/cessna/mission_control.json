@@ -16,15 +16,17 @@
 					"yaw_rate": 5,
 					"cruise_radius": 1100,
 					"loiter_radius": 1015,
+					"loiter_radius_offset": 3,
 					"loiter_lambda": 23,
 					"approach_altitude": 500,
 					"line_distance": 760,
-					"line_delta": 255
+					"line_delta": 350
 				},
 				"approaching": {
-					"velocity": 22,
+					"velocity": 27,
 					"climb_angle": -3,
 					"yaw_angle": 270,
+					"yaw_rate": 5,
 					"sideslip_angle": 0,
 					"position": [0, 0, 0]
 				}
