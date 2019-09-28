@@ -31,7 +31,8 @@
 				],
 				"pids": [
 					"velocity",
-					"climb_angle"
+					"climb_angle",
+					"rudder"
 				],
 				"controller_outputs": [
 					"roll",

@@ -8,7 +8,7 @@
 					"yaw_rate": 5,
 					"gliding_velocity": 36,
 					"gliding_climb_angle": -5,
-					"period": 5000
+					"period": 4000
 				},
 				"searching": {
 					"acceleration": 1,
@@ -16,19 +16,19 @@
 					"yaw_rate": 5,
 					"cruise_radius": 1100,
 					"loiter_radius": 1015,
-					"loiter_radius_offset": 3,
+					"loiter_radius_offset": 6.5,
 					"loiter_lambda": 23,
-					"approach_altitude": 500,
+					"approach_altitude": 850,
 					"line_distance": 760,
 					"line_delta": 350
 				},
 				"approaching": {
-					"velocity": 27,
+					"velocity": 30,
 					"climb_angle": -3,
 					"yaw_angle": 270,
 					"yaw_rate": 5,
 					"sideslip_angle": 0,
-					"position": [0, 0, 0]
+					"position": [-55, 0, 0]
 				}
 			}
 		}

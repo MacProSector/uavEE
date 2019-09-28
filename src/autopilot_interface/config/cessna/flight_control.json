@@ -167,7 +167,7 @@
 				"ff": 0,
 				"imax": 1,
 				"kd": 0,
-				"ki": 0.1,
+				"ki": 0.09,
 				"kp": 0.4
 			},
 			"velocity": {
@@ -176,6 +176,13 @@
 				"kd": 0,
 				"ki": 0.2,
 				"kp": 1
+			},
+			"rudder": {
+				"ff": 0,
+				"imax": 1,
+				"kd": 0,
+				"ki": 0,
+				"kp": 3
 			}
 		},
 		"controller_deflections": {
