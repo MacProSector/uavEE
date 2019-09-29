@@ -139,7 +139,7 @@ WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 		changeFrame(localFrame_, InertialFrame(), sensorDataAP);
 	}
 
-	string = QString::fromStdString(boost::posix_time::to_simple_string(sensorDataAP.timestamp));
+	string = QString::fromStdString(boost::posix_time::to_simple_string(sensorData.header.stamp.toBoost()));
 	ui->timeValue->setText(string);
 
 	string.sprintf(printFormat.c_str(), sensorDataAP.position.x());
@@ -160,19 +160,19 @@ WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 	string.sprintf(printFormat.c_str(), sensorDataAP.velocity.z());
 	ui->velocityUValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.airSpeed);
+	string.sprintf(printFormat.c_str(), sensorData.air_speed);
 	ui->airSpeedValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.groundSpeed);
+	string.sprintf(printFormat.c_str(), sensorData.ground_speed);
 	ui->groundSpeedValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.acceleration.x());
+	string.sprintf(printFormat.c_str(), sensorData.acceleration.linear.x);
 	ui->accelerationUValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.acceleration.y());
+	string.sprintf(printFormat.c_str(), sensorData.acceleration.linear.y);
 	ui->accelerationVValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.acceleration.z());
+	string.sprintf(printFormat.c_str(), sensorData.acceleration.linear.z);
 	ui->accelerationWValue->setText(string);
 
 	string.sprintf(printFormat.c_str(), radToDeg(sensorDataAP.attitude.x()));
@@ -184,19 +184,19 @@ WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 	string.sprintf(printFormat.c_str(), radToDeg(sensorDataAP.attitude.z()));
 	ui->yawAngleValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), radToDeg(sensorDataAP.angleOfAttack));
+	string.sprintf(printFormat.c_str(), radToDeg(sensorData.angle_of_attack));
 	ui->attackAngleValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), radToDeg(sensorDataAP.angleOfSideslip));
+	string.sprintf(printFormat.c_str(), radToDeg(sensorData.angle_of_sideslip));
 	ui->SideslipAngleValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), radToDeg(sensorDataAP.angularRate.x()));
+	string.sprintf(printFormat.c_str(), radToDeg(sensorData.velocity.angular.x));
 	ui->rollRateValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), radToDeg(sensorDataAP.angularRate.y()));
+	string.sprintf(printFormat.c_str(), radToDeg(sensorData.velocity.angular.y));
 	ui->pitchRateValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), radToDeg(sensorDataAP.angularRate.z()));
+	string.sprintf(printFormat.c_str(), radToDeg(sensorData.velocity.angular.z));
 	ui->yawRateValue->setText(string);
 
 	if (sensorDataAP.hasGPSFix)
@@ -217,25 +217,25 @@ WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 		ui->autopilotValue->setText("Off");
 	}
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.batteryVoltage);
+	string.sprintf(printFormat.c_str(), sensorData.battery_voltage);
 	ui->batteryVoltageValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.batteryCurrent);
+	string.sprintf(printFormat.c_str(), sensorData.battery_current);
 	ui->batteryCurrentValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.aileron);
+	string.sprintf(printFormat.c_str(), sensorData.aileron_level);
 	ui->aileronLevelValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.elevator);
+	string.sprintf(printFormat.c_str(), sensorData.elevator_level);
 	ui->elevatorLevelValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.rudder);
+	string.sprintf(printFormat.c_str(), sensorData.rudder_level);
 	ui->rudderLevelValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.throttle * 100);
+	string.sprintf(printFormat.c_str(), sensorData.throttle_level * 100);
 	ui->throttleLevelValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorDataAP.rpm);
+	string.sprintf(printFormat.c_str(), sensorData.motor_speed);
 	ui->motorSpeedValue->setText(string);
 
 	update();
