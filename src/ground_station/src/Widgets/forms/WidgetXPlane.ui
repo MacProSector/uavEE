@@ -93,19 +93,6 @@
            </layout>
           </item>
           <item>
-           <spacer name="horizontalSpacerLeft">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
            <layout class="QHBoxLayout" name="horizontalLayoutFrame">
             <item>
              <widget class="QLabel" name="frameLabel">
@@ -137,19 +124,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <spacer name="horizontalSpacerMiddle">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayoutEngine">
@@ -204,19 +178,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <spacer name="horizontalSpacerRight">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayoutWindLayer">
@@ -474,6 +435,9 @@
               </property>
               <item>
                <widget class="QLineEdit" name="positionEValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -482,32 +446,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="positionNValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -516,32 +491,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="positionUValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -550,32 +536,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="velocityEValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -584,32 +581,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="velocityNValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -618,32 +626,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="velocityUValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -652,32 +671,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="airSpeedValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -686,32 +716,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="groundSpeedValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -720,32 +761,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="accelerationUValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -754,32 +806,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="accelerationVValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -788,32 +851,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="accelerationWValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -822,32 +896,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="rollAngleValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -856,27 +941,35 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -1261,6 +1354,9 @@
               </property>
               <item>
                <widget class="QLineEdit" name="pitchAngleValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1269,32 +1365,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="yawAngleValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1303,32 +1410,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="attackAngleValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1337,32 +1455,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="SideslipAngleValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1371,32 +1500,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="rollRateValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1405,32 +1545,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="pitchRateValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1439,32 +1590,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="yawRateValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1473,72 +1635,121 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="gpsFixValue">
+               <widget class="QPushButton" name="gpsFixValue">
                 <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="editable">
                  <bool>false</bool>
                 </property>
-                <item>
-                 <property name="text">
-                  <string>Hold</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Lost</string>
-                 </property>
-                </item>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="baseSize">
+                 <size>
+                  <width>70</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>N/A</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="autopilotValue">
+               <widget class="QPushButton" name="autopilotValue">
                 <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="editable">
                  <bool>false</bool>
                 </property>
-                <item>
-                 <property name="text">
-                  <string>On</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Off</string>
-                 </property>
-                </item>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="baseSize">
+                 <size>
+                  <width>70</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>N/A</string>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="batteryVoltageValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1547,32 +1758,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="batteryCurrentValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1581,32 +1803,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="motorSpeedValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1615,27 +1848,35 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -2188,6 +2429,9 @@
               </property>
               <item>
                <widget class="QLineEdit" name="aileronLevelValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2196,32 +2440,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="elevatorLevelValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2230,32 +2485,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="rudderLevelValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2264,32 +2530,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="throttleLevelValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2298,32 +2575,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="windAltitudeValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2332,32 +2620,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="windDirectionValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2366,32 +2665,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="windSpeedValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2400,32 +2710,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="windTurbulenceValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2434,32 +2755,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="windShearDirectionValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2468,32 +2800,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="windShearSpeedValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2502,32 +2845,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="activeWindDirectionValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2536,32 +2890,43 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLineEdit" name="activeWindSpeedValue">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2570,27 +2935,35 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="baseSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>7</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>N/A</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="readOnly">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>

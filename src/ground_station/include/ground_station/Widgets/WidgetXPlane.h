@@ -21,8 +21,10 @@
 #define WIDGETXPLANE_H
 
 #include <memory>
+#include <mutex>
 #include <QWidget>
 #include <uavAP/Core/Frames/VehicleOneFrame.h>
+#include <simulation_interface/wind_layer.h>
 #include <simulation_interface/sensor_data.h>
 
 class IWidgetInterface;
@@ -56,15 +58,46 @@ public:
 public slots:
 
 	void
-	onSensorData(const simulation_interface::sensor_data& sd);
+	on_gpsFixValue_clicked();
 
 	void
-	onLocalFrame(const VehicleOneFrame&);
+	on_autopilotValue_clicked();
+
+	void
+	on_edit_clicked();
+
+	void
+	on_cancel_clicked();
+
+	void
+	on_apply_clicked();
+
+	void
+	onSensorData(const simulation_interface::sensor_data& sensorData);
+
+	void
+	onLocalFrame(const VehicleOneFrame& localFrame);
 
 private:
+
 	void
 	connectInterface(std::shared_ptr<IWidgetInterface> interface);
 	Ui::WidgetXPlane* ui;
+
+	void
+	clear();
+
+	void
+	setEdit();
+
+	void
+	setEdit(const bool& edit);
+
+	bool gpsFix_;
+	bool autopilotActive_;
+
+	bool edit_;
+	std::mutex editMutex_;
 
 	VehicleOneFrame localFrame_;
 };

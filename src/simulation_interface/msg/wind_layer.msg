@@ -1,0 +1,8 @@
+float64 wind_altitude
+float64 wind_direction
+float64 wind_speed
+float64 wind_turbulence
+float64 wind_shear_direction
+float64 wind_shear_speed
+float64 active_wind_direction
+float64 active_wind_speed

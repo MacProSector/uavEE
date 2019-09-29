@@ -19,6 +19,7 @@
 
 #include <ctime>
 #include <uavAP/Core/Frames/InertialFrame.h>
+#include <uavAP/Core/LinearAlgebra.h>
 #include <uavAP/Core/Logging/APLogger.h>
 #include <uavAP/Core/SensorData.h>
 #include <uavAP/Core/Time.h>
@@ -30,9 +31,15 @@
 #include "ground_station/IWidgetInterface.h"
 
 WidgetXPlane::WidgetXPlane(QWidget* parent) :
-		QWidget(parent), ui(new Ui::WidgetXPlane)
+		QWidget(parent), ui(new Ui::WidgetXPlane), gpsFix_(false), autopilotActive_(false)
 {
 	ui->setupUi(this);
+
+	setEdit();
+
+	std::unique_lock<std::mutex> lock(editMutex_);
+	setEdit(false);
+	lock.unlock();
 }
 
 WidgetXPlane::~WidgetXPlane()
@@ -48,6 +55,183 @@ WidgetXPlane::onLocalFrame(const VehicleOneFrame& localFrame)
 }
 
 void
+WidgetXPlane::on_gpsFixValue_clicked()
+{
+	gpsFix_ = !gpsFix_;
+
+	if (gpsFix_)
+	{
+		ui->gpsFixValue->setText(QString("Acquired"));
+	}
+	else
+	{
+		ui->gpsFixValue->setText(QString("Lost"));
+	}
+}
+
+void
+WidgetXPlane::on_autopilotValue_clicked()
+{
+	autopilotActive_ = !autopilotActive_;
+
+	if (autopilotActive_)
+	{
+		ui->autopilotValue->setText(QString("On"));
+	}
+	else
+	{
+		ui->autopilotValue->setText(QString("Off"));
+	}
+}
+
+void
+WidgetXPlane::on_edit_clicked()
+{
+	std::unique_lock<std::mutex> lock(editMutex_);
+	setEdit(true);
+	lock.unlock();
+}
+
+void
+WidgetXPlane::on_cancel_clicked()
+{
+	std::unique_lock<std::mutex> lock(editMutex_);
+	setEdit(false);
+	lock.unlock();
+}
+
+void
+WidgetXPlane::on_apply_clicked()
+{
+	std::unique_lock<std::mutex> lock(editMutex_);
+	if (edit_)
+	{
+		setEdit(false);
+	}
+	lock.unlock();
+}
+
+void
+WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
+{
+	std::unique_lock<std::mutex> lock(editMutex_);
+	if (edit_)
+	{
+		return;
+	}
+	lock.unlock();
+
+	QString string;
+	SensorData sensorDataAP = rosToAp(sensorData);
+
+	if (ui->frameValue->currentIndex() == 1)
+	{
+		changeFrame(localFrame_, InertialFrame(), sensorDataAP);
+	}
+
+	string = QString::fromStdString(boost::posix_time::to_simple_string(sensorDataAP.timestamp));
+	ui->timeValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.position.x());
+	ui->positionEValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.position.y());
+	ui->positionNValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.position.z());
+	ui->positionUValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.velocity.x());
+	ui->velocityEValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.velocity.y());
+	ui->velocityNValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.velocity.z());
+	ui->velocityUValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.airSpeed);
+	ui->airSpeedValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.groundSpeed);
+	ui->groundSpeedValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.acceleration.x());
+	ui->accelerationUValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.acceleration.y());
+	ui->accelerationVValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.acceleration.z());
+	ui->accelerationWValue->setText(string);
+
+	string.sprintf("%10.2f", radToDeg(sensorDataAP.attitude.x()));
+	ui->rollAngleValue->setText(string);
+
+	string.sprintf("%10.2f", radToDeg(sensorDataAP.attitude.y()));
+	ui->pitchAngleValue->setText(string);
+
+	string.sprintf("%10.2f", radToDeg(sensorDataAP.attitude.z()));
+	ui->yawAngleValue->setText(string);
+
+	string.sprintf("%10.2f", radToDeg(sensorDataAP.angleOfAttack));
+	ui->attackAngleValue->setText(string);
+
+	string.sprintf("%10.2f", radToDeg(sensorDataAP.angleOfSideslip));
+	ui->SideslipAngleValue->setText(string);
+
+	string.sprintf("%10.2f", radToDeg(sensorDataAP.angularRate.x()));
+	ui->rollRateValue->setText(string);
+
+	string.sprintf("%10.2f", radToDeg(sensorDataAP.angularRate.y()));
+	ui->pitchRateValue->setText(string);
+
+	string.sprintf("%10.2f", radToDeg(sensorDataAP.angularRate.z()));
+	ui->yawRateValue->setText(string);
+
+	if (sensorDataAP.hasGPSFix)
+	{
+		ui->gpsFixValue->setText("Acquired");
+	}
+	else
+	{
+		ui->gpsFixValue->setText("Lost");
+	}
+
+	if (sensorDataAP.autopilotActive)
+	{
+		ui->autopilotValue->setText("On");
+	}
+	else
+	{
+		ui->autopilotValue->setText("Off");
+	}
+
+	string.sprintf("%10.2f", sensorDataAP.batteryVoltage);
+	ui->batteryVoltageValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.batteryCurrent);
+	ui->batteryCurrentValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.aileron);
+	ui->aileronLevelValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.elevator);
+	ui->elevatorLevelValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.rudder);
+	ui->rudderLevelValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.throttle * 100);
+	ui->throttleLevelValue->setText(string);
+
+	string.sprintf("%10.2f", sensorDataAP.rpm);
+	ui->motorSpeedValue->setText(string);
+
+	update();
+}
+
+void
 WidgetXPlane::connectInterface(std::shared_ptr<IWidgetInterface> interface)
 {
 	if (!interface)
@@ -59,127 +243,227 @@ WidgetXPlane::connectInterface(std::shared_ptr<IWidgetInterface> interface)
 	{
 		QObject::connect(ds.get(), SIGNAL(onSensorData(const simulation_interface::sensor_data&)),
 				this, SLOT(onSensorData(const simulation_interface::sensor_data&)));
-		QObject::connect(ds.get(), SIGNAL(onLocalFrame(const VehicleOneFrame&)),
-				this, SLOT(onLocalFrame(const VehicleOneFrame&)));
+		QObject::connect(ds.get(), SIGNAL(onLocalFrame(const VehicleOneFrame&)), this,
+				SLOT(onLocalFrame(const VehicleOneFrame&)));
 	}
 	else
 		APLOG_ERROR << "WidgetXPlane: IDataSignals Missing.";
 }
 
 void
-WidgetXPlane::onSensorData(const simulation_interface::sensor_data& data)
+WidgetXPlane::clear()
 {
-	QString t;
+	ui->positionEValue->setText(QString(""));
+	ui->positionNValue->setText(QString(""));
+	ui->positionUValue->setText(QString(""));
 
-	SensorData sd = rosToAp(data);
+	ui->velocityEValue->setText(QString(""));
+	ui->velocityNValue->setText(QString(""));
+	ui->velocityUValue->setText(QString(""));
 
-//	if (ui->frameEarthRadioButton->isChecked())
-//	{
-//		changeFrame(localFrame_, InertialFrame(), sd);
-//	}
-//
-//	t = QString::fromStdString(boost::posix_time::to_simple_string(sd.timestamp));
-//	ui->timeValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.position.x());
-//	ui->peValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.position.y());
-//	ui->pnValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.position.z());
-//	ui->puValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.velocity.x());
-//	ui->veValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.velocity.y());
-//	ui->vnValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.velocity.z());
-//	ui->vuValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.airSpeed);
-//	ui->vaValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.groundSpeed);
-//	ui->vgValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.acceleration.x());
-//	ui->auValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.acceleration.y());
-//	ui->avValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.acceleration.z());
-//	ui->awValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.attitude.x() * 180 / M_PI);
-//	ui->rollValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.attitude.y() * 180 / M_PI);
-//	ui->pitchValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.attitude.z() * 180 / M_PI);
-//	ui->yawValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.angleOfAttack * 180 / M_PI);
-//	ui->alphaValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.angleOfSideslip * 180 / M_PI);
-//	ui->betaValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.angularRate.x() * 180 / M_PI);
-//	ui->rollrValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.angularRate.y() * 180 / M_PI);
-//	ui->pitchrValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.angularRate.z() * 180 / M_PI);
-//	ui->yawrValue->setText(t);
-//
-//	if (sd.hasGPSFix)
-//	{
-//		t.sprintf("      True");
-//	}
-//	else
-//	{
-//		t.sprintf("      False");
-//	}
-//
-//	ui->gpsFixValue->setText(t);
-//
-//	if (sd.autopilotActive)
-//	{
-//		t.sprintf("      True");
-//	}
-//	else
-//	{
-//		t.sprintf("      False");
-//	}
-//
-//	ui->apActiveValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.batteryVoltage);
-//	ui->voltValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.batteryCurrent);
-//	ui->currValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.aileron);
-//	ui->aileronValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.elevator);
-//	ui->elevatorValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.rudder);
-//	ui->rudderValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.throttle * 100);
-//	ui->throttleValue->setText(t);
-//
-//	t.sprintf("%10.5f", sd.rpm);
-//	ui->rpmValue->setText(t);
+	ui->airSpeedValue->setText(QString(""));
+	ui->groundSpeedValue->setText(QString(""));
 
-	update();
+	ui->accelerationUValue->setText(QString(""));
+	ui->accelerationVValue->setText(QString(""));
+	ui->accelerationWValue->setText(QString(""));
+
+	ui->rollAngleValue->setText(QString(""));
+	ui->pitchAngleValue->setText(QString(""));
+	ui->yawAngleValue->setText(QString(""));
+
+	ui->attackAngleValue->setText(QString(""));
+	ui->SideslipAngleValue->setText(QString(""));
+
+	ui->rollRateValue->setText(QString(""));
+	ui->pitchRateValue->setText(QString(""));
+	ui->yawRateValue->setText(QString(""));
+
+	ui->gpsFixValue->setText(QString(""));
+	ui->autopilotValue->setText(QString(""));
+
+	ui->batteryVoltageValue->setText(QString(""));
+	ui->batteryCurrentValue->setText(QString(""));
+
+	ui->motorSpeedValue->setText(QString(""));
+
+	ui->aileronLevelValue->setText(QString(""));
+	ui->elevatorLevelValue->setText(QString(""));
+	ui->rudderLevelValue->setText(QString(""));
+	ui->throttleLevelValue->setText(QString(""));
+
+	ui->windAltitudeValue->setText(QString(""));
+	ui->windDirectionValue->setText(QString(""));
+	ui->windSpeedValue->setText(QString(""));
+	ui->windTurbulenceValue->setText(QString(""));
+
+	ui->windShearDirectionValue->setText(QString(""));
+	ui->windShearSpeedValue->setText(QString(""));
+
+	ui->activeWindDirectionValue->setText(QString(""));
+	ui->activeWindSpeedValue->setText(QString(""));
+
+	gpsFix_ = false;
+	autopilotActive_ = false;
+}
+
+void
+WidgetXPlane::setEdit()
+{
+	ui->airSpeedValue->setStyleSheet(":disabled { color: white }");
+	ui->groundSpeedValue->setStyleSheet(":disabled { color: white }");
+
+	ui->attackAngleValue->setStyleSheet(":disabled { color: white }");
+	ui->SideslipAngleValue->setStyleSheet(":disabled { color: white }");
+
+	ui->activeWindDirectionValue->setStyleSheet(":disabled { color: white }");
+	ui->activeWindSpeedValue->setStyleSheet(":disabled { color: white }");
+
+	ui->airSpeedValue->setEnabled(false);
+	ui->groundSpeedValue->setEnabled(false);
+
+	ui->attackAngleValue->setEnabled(false);
+	ui->SideslipAngleValue->setEnabled(false);
+
+	ui->activeWindDirectionValue->setEnabled(false);
+	ui->activeWindSpeedValue->setEnabled(false);
+}
+
+void
+WidgetXPlane::setEdit(const bool& edit)
+{
+	edit_ = edit;
+
+	ui->positionEValue->setEnabled(edit);
+	ui->positionNValue->setEnabled(edit);
+	ui->positionUValue->setEnabled(edit);
+
+	ui->velocityEValue->setEnabled(edit);
+	ui->velocityNValue->setEnabled(edit);
+	ui->velocityUValue->setEnabled(edit);
+
+	ui->accelerationUValue->setEnabled(edit);
+	ui->accelerationVValue->setEnabled(edit);
+	ui->accelerationWValue->setEnabled(edit);
+
+	ui->rollAngleValue->setEnabled(edit);
+	ui->pitchAngleValue->setEnabled(edit);
+	ui->yawAngleValue->setEnabled(edit);
+
+	ui->rollRateValue->setEnabled(edit);
+	ui->pitchRateValue->setEnabled(edit);
+	ui->yawRateValue->setEnabled(edit);
+
+	ui->gpsFixValue->setEnabled(edit);
+	ui->autopilotValue->setEnabled(edit);
+
+	ui->batteryVoltageValue->setEnabled(edit);
+	ui->batteryCurrentValue->setEnabled(edit);
+
+	ui->motorSpeedValue->setEnabled(edit);
+
+	ui->aileronLevelValue->setEnabled(edit);
+	ui->elevatorLevelValue->setEnabled(edit);
+	ui->rudderLevelValue->setEnabled(edit);
+	ui->throttleLevelValue->setEnabled(edit);
+
+	ui->windAltitudeValue->setEnabled(edit);
+	ui->windDirectionValue->setEnabled(edit);
+	ui->windSpeedValue->setEnabled(edit);
+	ui->windTurbulenceValue->setEnabled(edit);
+
+	ui->windShearDirectionValue->setEnabled(edit);
+	ui->windShearSpeedValue->setEnabled(edit);
+
+	if (edit)
+	{
+		clear();
+
+		ui->positionEValue->setStyleSheet("");
+		ui->positionNValue->setStyleSheet("");
+		ui->positionUValue->setStyleSheet("");
+
+		ui->velocityEValue->setStyleSheet("");
+		ui->velocityNValue->setStyleSheet("");
+		ui->velocityUValue->setStyleSheet("");
+
+		ui->accelerationUValue->setStyleSheet("");
+		ui->accelerationVValue->setStyleSheet("");
+		ui->accelerationWValue->setStyleSheet("");
+
+		ui->rollAngleValue->setStyleSheet("");
+		ui->pitchAngleValue->setStyleSheet("");
+		ui->yawAngleValue->setStyleSheet("");
+
+		ui->rollRateValue->setStyleSheet("");
+		ui->pitchRateValue->setStyleSheet("");
+		ui->yawRateValue->setStyleSheet("");
+
+		ui->gpsFixValue->setStyleSheet("");
+		ui->autopilotValue->setStyleSheet("");
+
+		ui->gpsFixValue->setStyleSheet("background-color: rgb(35, 38, 41);");
+		ui->autopilotValue->setStyleSheet("background-color: rgb(35, 38, 41);");
+
+		ui->batteryVoltageValue->setStyleSheet("");
+		ui->batteryCurrentValue->setStyleSheet("");
+
+		ui->motorSpeedValue->setStyleSheet("");
+
+		ui->aileronLevelValue->setStyleSheet("");
+		ui->elevatorLevelValue->setStyleSheet("");
+		ui->rudderLevelValue->setStyleSheet("");
+		ui->throttleLevelValue->setStyleSheet("");
+
+		ui->windAltitudeValue->setStyleSheet("");
+		ui->windDirectionValue->setStyleSheet("");
+		ui->windSpeedValue->setStyleSheet("");
+		ui->windTurbulenceValue->setStyleSheet("");
+
+		ui->windShearDirectionValue->setStyleSheet("");
+		ui->windShearSpeedValue->setStyleSheet("");
+	}
+	else
+	{
+		ui->positionEValue->setStyleSheet(":disabled { color: white }");
+		ui->positionNValue->setStyleSheet(":disabled { color: white }");
+		ui->positionUValue->setStyleSheet(":disabled { color: white }");
+
+		ui->velocityEValue->setStyleSheet(":disabled { color: white }");
+		ui->velocityNValue->setStyleSheet(":disabled { color: white }");
+		ui->velocityUValue->setStyleSheet(":disabled { color: white }");
+
+		ui->accelerationUValue->setStyleSheet(":disabled { color: white }");
+		ui->accelerationVValue->setStyleSheet(":disabled { color: white }");
+		ui->accelerationWValue->setStyleSheet(":disabled { color: white }");
+
+		ui->rollAngleValue->setStyleSheet(":disabled { color: white }");
+		ui->pitchAngleValue->setStyleSheet(":disabled { color: white }");
+		ui->yawAngleValue->setStyleSheet(":disabled { color: white }");
+
+		ui->rollRateValue->setStyleSheet(":disabled { color: white }");
+		ui->pitchRateValue->setStyleSheet(":disabled { color: white }");
+		ui->yawRateValue->setStyleSheet(":disabled { color: white }");
+
+		ui->gpsFixValue->setStyleSheet(":disabled { color: white }");
+		ui->autopilotValue->setStyleSheet(":disabled { color: white }");
+
+		ui->batteryVoltageValue->setStyleSheet(":disabled { color: white }");
+		ui->batteryCurrentValue->setStyleSheet(":disabled { color: white }");
+
+		ui->motorSpeedValue->setStyleSheet(":disabled { color: white }");
+
+		ui->aileronLevelValue->setStyleSheet(":disabled { color: white }");
+		ui->elevatorLevelValue->setStyleSheet(":disabled { color: white }");
+		ui->rudderLevelValue->setStyleSheet(":disabled { color: white }");
+		ui->throttleLevelValue->setStyleSheet(":disabled { color: white }");
+
+		ui->windAltitudeValue->setStyleSheet(":disabled { color: white }");
+		ui->windDirectionValue->setStyleSheet(":disabled { color: white }");
+		ui->windSpeedValue->setStyleSheet(":disabled { color: white }");
+		ui->windTurbulenceValue->setStyleSheet(":disabled { color: white }");
+
+		ui->windShearDirectionValue->setStyleSheet(":disabled { color: white }");
+		ui->windShearSpeedValue->setStyleSheet(":disabled { color: white }");
+	}
 }

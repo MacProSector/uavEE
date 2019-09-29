@@ -232,7 +232,7 @@ XPlaneRosNode::getSensorData()
 
 	sd.sequenceNr = sequenceNr_++;
 
-	sd.has_gps_fix = static_cast<bool>(XPLMGetDatai(gpsPowerRef_));
+	sd.gps_fix = static_cast<bool>(XPLMGetDatai(gpsPowerRef_));
 	sd.autopilot_active = autopilotActive_;
 
 	sd.angle_of_attack = static_cast<double>(XPLMGetDataf(angleOfAttackRef_)) * deg2rad;
@@ -246,18 +246,18 @@ XPlaneRosNode::getSensorData()
 	XPLMGetDatavf(batteryCurrentRef_, batteryCurrent, 0, 8);
 	sd.battery_current = batteryCurrent[0];
 
-	sd.aileron = static_cast<double>(XPLMGetDataf(aileronRef_));
-	sd.elevator = static_cast<double>(XPLMGetDataf(elevatorRef_));
-	sd.rudder = static_cast<double>(XPLMGetDataf(rudderRef_));
+	sd.aileron_level = static_cast<double>(XPLMGetDataf(aileronRef_));
+	sd.elevator_level = static_cast<double>(XPLMGetDataf(elevatorRef_));
+	sd.rudder_level = static_cast<double>(XPLMGetDataf(rudderRef_));
 
 	float throttle[8];
 	XPLMGetDatavf(throttleRef_, throttle, 0, 8);
-	sd.throttle = throttle[0];
+	sd.throttle_level = throttle[0];
 
 	float rpm[8];
 	XPLMGetDatavf(rpmRef_, rpm, 0, 8);
 	rpm[0] = rpm[0] * 60 / M_PI / 2; // Radians Per Second to Revolution Per Minute
-	sd.rpm = rpm[0];
+	sd.motor_speed = rpm[0];
 
 	sensorDataPublisher_.publish(sd);
 
