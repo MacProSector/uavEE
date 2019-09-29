@@ -276,6 +276,12 @@ WidgetXPlane::onXPlaneSensorData(const simulation_interface::sensor_data& sensor
 	string.sprintf(printFormat.c_str(), sensorData.throttle_level * 100);
 	ui->throttleLevelValue->setText(string);
 
+	string.sprintf(printFormat.c_str(), sensorData.precipitation_level * 100);
+	ui->precipitationLevelValue->setText(string);
+
+	string.sprintf(printFormat.c_str(), sensorData.storminess_level * 100);
+	ui->storminessLevelValue->setText(string);
+
 	std::unique_lock<std::mutex> windLayerIndexLock(windLayerIndexMutex_);
 	windLayerIndex = windLayerIndex_;
 	windLayerIndexLock.unlock();
@@ -301,12 +307,6 @@ WidgetXPlane::onXPlaneSensorData(const simulation_interface::sensor_data& sensor
 
 		string.sprintf(printFormat.c_str(), wind_layer.wind_shear_speed);
 		ui->windShearSpeedValue->setText(string);
-
-		string.sprintf(printFormat.c_str(), radToDeg(wind_layer.active_wind_direction));
-		ui->activeWindDirectionValue->setText(string);
-
-		string.sprintf(printFormat.c_str(), wind_layer.active_wind_speed);
-		ui->activeWindSpeedValue->setText(string);
 	}
 
 	update();
@@ -381,6 +381,9 @@ WidgetXPlane::setText(const QString& text)
 	ui->rudderLevelValue->setText(text);
 	ui->throttleLevelValue->setText(text);
 
+	ui->precipitationLevelValue->setText(text);
+	ui->storminessLevelValue->setText(text);
+
 	ui->windAltitudeValue->setText(text);
 	ui->windDirectionValue->setText(text);
 	ui->windSpeedValue->setText(text);
@@ -388,9 +391,6 @@ WidgetXPlane::setText(const QString& text)
 
 	ui->windShearDirectionValue->setText(text);
 	ui->windShearSpeedValue->setText(text);
-
-	ui->activeWindDirectionValue->setText(text);
-	ui->activeWindSpeedValue->setText(text);
 }
 
 void
@@ -464,6 +464,9 @@ WidgetXPlane::setStyle(const bool& edit)
 	ui->rudderLevelValue->setStyleSheet(style);
 	ui->throttleLevelValue->setStyleSheet(style);
 
+	ui->precipitationLevelValue->setStyleSheet(style);
+	ui->storminessLevelValue->setStyleSheet(style);
+
 	ui->windAltitudeValue->setStyleSheet(style);
 	ui->windDirectionValue->setStyleSheet(style);
 	ui->windSpeedValue->setStyleSheet(style);
@@ -471,9 +474,6 @@ WidgetXPlane::setStyle(const bool& edit)
 
 	ui->windShearDirectionValue->setStyleSheet(style);
 	ui->windShearSpeedValue->setStyleSheet(style);
-
-	ui->activeWindDirectionValue->setStyleSheet(style);
-	ui->activeWindSpeedValue->setStyleSheet(style);
 }
 
 void
@@ -527,6 +527,9 @@ WidgetXPlane::setEdit(const bool& edit)
 	ui->rudderLevelValue->setEnabled(edit);
 	ui->throttleLevelValue->setEnabled(edit);
 
+	ui->precipitationLevelValue->setEnabled(edit);
+	ui->storminessLevelValue->setEnabled(edit);
+
 	ui->windAltitudeValue->setEnabled(edit);
 	ui->windDirectionValue->setEnabled(edit);
 	ui->windSpeedValue->setEnabled(edit);
@@ -534,9 +537,6 @@ WidgetXPlane::setEdit(const bool& edit)
 
 	ui->windShearDirectionValue->setEnabled(edit);
 	ui->windShearSpeedValue->setEnabled(edit);
-
-	ui->activeWindDirectionValue->setEnabled(false);
-	ui->activeWindSpeedValue->setEnabled(false);
 }
 
 void

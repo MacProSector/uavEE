@@ -94,14 +94,14 @@ private:
 	XPLMDataRef elevatorLevelRef_;
 	XPLMDataRef rudderLevelRef_;
 	XPLMDataRef throttleLevelRef_;
+	XPLMDataRef precipitationLevelRef_;
+	XPLMDataRef storminessLevelRef_;
 	XPLMDataRef windAltitudeRef_[3];
 	XPLMDataRef windDirectionRef_[3];
 	XPLMDataRef windSpeedRef_[3];
 	XPLMDataRef windTurbulenceRef_[3];
 	XPLMDataRef windShearDirectionRef_[3];
 	XPLMDataRef windShearSpeedRef_[3];
-	XPLMDataRef activeWindDirectionRef_;
-	XPLMDataRef activeWindSpeedRef_;
 	XPLMDataRef actuationRef_[3];
 
 	unsigned int sequenceNr_;

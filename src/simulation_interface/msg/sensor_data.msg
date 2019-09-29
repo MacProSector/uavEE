@@ -17,4 +17,6 @@ float64 aileron_level
 float64 elevator_level
 float64 rudder_level
 float64 throttle_level
+float64 precipitation_level
+float64 storminess_level
 wind_layer[] wind_layers
