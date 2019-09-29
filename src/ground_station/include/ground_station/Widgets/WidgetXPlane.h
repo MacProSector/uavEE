@@ -24,10 +24,10 @@
 #include <mutex>
 #include <QWidget>
 #include <uavAP/Core/Frames/VehicleOneFrame.h>
-#include <simulation_interface/wind_layer.h>
 #include <simulation_interface/sensor_data.h>
 
 class IWidgetInterface;
+class VehicleOneFrame;
 
 namespace Ui
 {
@@ -73,6 +73,15 @@ public slots:
 	on_apply_clicked();
 
 	void
+	onFrameIndexChanged(int index);
+
+	void
+	onEngineIndexChanged(int index);
+
+	void
+	onWindLayerIndexChanged(int index);
+
+	void
 	onSensorData(const simulation_interface::sensor_data& sensorData);
 
 	void
@@ -106,6 +115,15 @@ private:
 
 	bool edit_;
 	std::mutex editMutex_;
+
+	int frameIndex_;
+	std::mutex frameIndexMutex_;
+
+	int engineIndex_;
+	std::mutex engineIndexMutex_;
+
+	int windLayerIndex_;
+	std::mutex windLayerIndexMutex_;
 
 	VehicleOneFrame localFrame_;
 };

@@ -24,6 +24,7 @@
 #include <uavAP/Core/SensorData.h>
 #include <uavAP/Core/Time.h>
 #include <autopilot_interface/detail/uavAPConversions.h>
+#include <simulation_interface/wind_layer.h>
 
 #include "ui_WidgetXPlane.h"
 #include "ground_station/Widgets/WidgetXPlane.h"
@@ -32,9 +33,18 @@
 
 WidgetXPlane::WidgetXPlane(QWidget* parent) :
 		QWidget(parent), ui(new Ui::WidgetXPlane), gpsFix_(false), autopilotActive_(false), sensorDataActive_(
-				false), edit_(true)
+				false), edit_(true), frameIndex_(0), engineIndex_(0), windLayerIndex_(0)
 {
 	ui->setupUi(this);
+
+	QObject::connect(ui->frameValue, SIGNAL(currentIndexChanged(int)), this,
+			SLOT(onFrameIndexChanged(int)));
+
+	QObject::connect(ui->engineValue, SIGNAL(currentIndexChanged(int)), this,
+			SLOT(onEngineIndexChanged(int)));
+
+	QObject::connect(ui->windLayerValue, SIGNAL(currentIndexChanged(int)), this,
+			SLOT(onWindLayerIndexChanged(int)));
 
 	disabledStyle_ =
 			":disabled { color: white; border-color: rgb(49, 54, 59); padding-left: 0; padding-right: 0 }";
@@ -50,12 +60,6 @@ WidgetXPlane::~WidgetXPlane()
 {
 	APLOG_DEBUG << "WidgetXPlane: Widget Deleted.";
 	delete ui;
-}
-
-void
-WidgetXPlane::onLocalFrame(const VehicleOneFrame& localFrame)
-{
-	localFrame_ = localFrame;
 }
 
 void
@@ -116,14 +120,38 @@ WidgetXPlane::on_apply_clicked()
 }
 
 void
+WidgetXPlane::onFrameIndexChanged(int index)
+{
+	std::unique_lock<std::mutex> lock(frameIndexMutex_);
+	frameIndex_ = index;
+	lock.unlock();
+}
+
+void
+WidgetXPlane::onEngineIndexChanged(int index)
+{
+	std::unique_lock<std::mutex> lock(engineIndexMutex_);
+	engineIndex_ = index;
+	lock.unlock();
+}
+
+void
+WidgetXPlane::onWindLayerIndexChanged(int index)
+{
+	std::unique_lock<std::mutex> lock(windLayerIndexMutex_);
+	windLayerIndex_ = index;
+	lock.unlock();
+}
+
+void
 WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 {
-	std::unique_lock<std::mutex> lock(editMutex_);
+	std::unique_lock<std::mutex> editLock(editMutex_);
 	if (edit_)
 	{
 		return;
 	}
-	lock.unlock();
+	editLock.unlock();
 
 	if (!sensorDataActive_)
 	{
@@ -134,13 +162,20 @@ WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 	std::string printFormat = "%10.5f";
 	QString string;
 	SensorData sensorDataAP = rosToAp(sensorData);
+	int frameIndex = 0;
+	int windLayerIndex = 0;
 
-	if (ui->frameValue->currentIndex() == 1)
+	std::unique_lock<std::mutex> frameIndexLock(frameIndexMutex_);
+	frameIndex = frameIndex_;
+	frameIndexLock.unlock();
+
+	if (frameIndex == 1)
 	{
 		changeFrame(localFrame_, InertialFrame(), sensorDataAP);
 	}
 
-	string = QString::fromStdString(boost::posix_time::to_simple_string(sensorData.header.stamp.toBoost()));
+	string = QString::fromStdString(
+			boost::posix_time::to_simple_string(sensorData.header.stamp.toBoost()));
 	ui->timeValue->setText(string);
 
 	string.sprintf(printFormat.c_str(), sensorDataAP.position.x());
@@ -224,6 +259,9 @@ WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 	string.sprintf(printFormat.c_str(), sensorData.battery_current);
 	ui->batteryCurrentValue->setText(string);
 
+	string.sprintf(printFormat.c_str(), sensorData.motor_speed);
+	ui->motorSpeedValue->setText(string);
+
 	string.sprintf(printFormat.c_str(), sensorData.aileron_level);
 	ui->aileronLevelValue->setText(string);
 
@@ -236,10 +274,46 @@ WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 	string.sprintf(printFormat.c_str(), sensorData.throttle_level * 100);
 	ui->throttleLevelValue->setText(string);
 
-	string.sprintf(printFormat.c_str(), sensorData.motor_speed);
-	ui->motorSpeedValue->setText(string);
+	std::unique_lock<std::mutex> windLayerIndexLock(windLayerIndexMutex_);
+	windLayerIndex = windLayerIndex_;
+	windLayerIndexLock.unlock();
+
+	if (sensorData.wind_layers.size() >= 3)
+	{
+		auto wind_layer = sensorData.wind_layers[windLayerIndex];
+
+		string.sprintf(printFormat.c_str(), wind_layer.wind_altitude);
+		ui->windAltitudeValue->setText(string);
+
+		string.sprintf(printFormat.c_str(), radToDeg(wind_layer.wind_direction));
+		ui->windDirectionValue->setText(string);
+
+		string.sprintf(printFormat.c_str(), wind_layer.wind_speed);
+		ui->windSpeedValue->setText(string);
+
+		string.sprintf(printFormat.c_str(), wind_layer.wind_turbulence * 100);
+		ui->windTurbulenceValue->setText(string);
+
+		string.sprintf(printFormat.c_str(), radToDeg(wind_layer.wind_shear_direction));
+		ui->windShearDirectionValue->setText(string);
+
+		string.sprintf(printFormat.c_str(), wind_layer.wind_shear_speed);
+		ui->windShearSpeedValue->setText(string);
+
+		string.sprintf(printFormat.c_str(), radToDeg(wind_layer.active_wind_direction));
+		ui->activeWindDirectionValue->setText(string);
+
+		string.sprintf(printFormat.c_str(), wind_layer.active_wind_speed);
+		ui->activeWindSpeedValue->setText(string);
+	}
 
 	update();
+}
+
+void
+WidgetXPlane::onLocalFrame(const VehicleOneFrame& localFrame)
+{
+	localFrame_ = localFrame;
 }
 
 void
@@ -258,7 +332,9 @@ WidgetXPlane::connectInterface(std::shared_ptr<IWidgetInterface> interface)
 				SLOT(onLocalFrame(const VehicleOneFrame&)));
 	}
 	else
+	{
 		APLOG_ERROR << "WidgetXPlane: IDataSignals Missing.";
+	}
 }
 
 void
