@@ -36,6 +36,8 @@ WidgetXPlane::WidgetXPlane(QWidget* parent) :
 				false), edit_(true), frameIndex_(0), engineIndex_(0), windLayerIndex_(0)
 {
 	ui->setupUi(this);
+	ui->gpsFixValue->setFixedSize(ui->yawRateValue->size());
+	ui->autopilotValue->setFixedSize(ui->batteryVoltageValue->size());
 
 	QObject::connect(ui->frameValue, SIGNAL(currentIndexChanged(int)), this,
 			SLOT(onFrameIndexChanged(int)));
