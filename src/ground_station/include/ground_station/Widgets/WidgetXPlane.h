@@ -85,16 +85,24 @@ private:
 	Ui::WidgetXPlane* ui;
 
 	void
-	clear();
+	setText(const QString& text);
 
 	void
-	setEdit();
+	setStyle(const bool& edit);
 
 	void
 	setEdit(const bool& edit);
 
+	void
+	clear();
+
+	QString disabledStyle_;
+	QString enabledStyle_;
+	QString enabledStyleButton_;
+
 	bool gpsFix_;
 	bool autopilotActive_;
+	bool sensorDataActive_;
 
 	bool edit_;
 	std::mutex editMutex_;
