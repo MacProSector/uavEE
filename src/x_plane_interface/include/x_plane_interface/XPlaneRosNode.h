@@ -17,23 +17,22 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////////////
 /**
- * @file XPlaneRosNode.h
- * @author Mirco Theile, mircot@illinois.edu
- * @date [DD.MM.YYYY] 27.3.2018
- * @brief
+ * @file	XPlaneRosNode.h
+ * @author	Mirco Theile, mircot@illinois.edu
+ * @date	[DD.MM.YYYY] 27.3.2018
+ * @brief	X-Plane ROS Interface Node
  */
+
 #ifndef XPLANEROSNODE_H
 #define XPLANEROSNODE_H
 
+#include <boost/property_tree/ptree.hpp>
 #include <ros/ros.h>
-
 #include <uavAP/Core/Object/ObjectHandle.h>
 #include <uavAP/Core/Object/IAggregatableObject.h>
-#include <boost/property_tree/ptree.hpp>
+#include <simulation_interface/actuation.h>
 
 #include "xPlane/CHeaders/XPLM/XPLMDataAccess.h"
-
-#include <simulation_interface/actuation.h>
 
 class IScheduler;
 
@@ -65,41 +64,42 @@ public:
 private:
 
 	void
-	getSensorData();
+	setDataRefs();
 
 	void
-	actuate(const simulation_interface::actuation& act);
+	setActuationData(const simulation_interface::actuation& actuation);
+
+	void
+	publishSensorData();
 
 	ObjectHandle<IScheduler> scheduler_;
-
-	int sensorFrequency_;
 
 	ros::Publisher sensorDataPublisher_;
 	ros::Subscriber actuationSubscriber_;
 
 	XPLMDataRef positionRefs_[3];
 	XPLMDataRef velocityRefs_[3];
+	XPLMDataRef airSpeedRef_;
 	XPLMDataRef accelerationRefs_[3];
 	XPLMDataRef attitudeRefs_[3];
-	XPLMDataRef angularRateRefs_[3];
-	XPLMDataRef trueAirSpeedRef_;
-	XPLMDataRef gpsPowerRef_;
 	XPLMDataRef angleOfAttackRef_;
 	XPLMDataRef angleOfSideslipRef_;
+	XPLMDataRef angularRateRefs_[3];
+	XPLMDataRef gpsFixRef_;
+	XPLMDataRef autopilotActiveRef_[2];
 	XPLMDataRef batteryVoltageRef_;
 	XPLMDataRef batteryCurrentRef_;
-	XPLMDataRef aileronRef_;
-	XPLMDataRef elevatorRef_;
-	XPLMDataRef rudderRef_;
-	XPLMDataRef throttleRef_;
-	XPLMDataRef rpmRef_;
-
-	XPLMDataRef overridesRef_[2];
-	XPLMDataRef joystickAttitudeRef_[3];
+	XPLMDataRef motorSpeedRef_;
+	XPLMDataRef aileronLevelRef_;
+	XPLMDataRef elevatorLevelRef_;
+	XPLMDataRef rudderLevelRef_;
+	XPLMDataRef throttleLevelRef_;
+	XPLMDataRef actuationRef_[3];
 
 	unsigned int sequenceNr_;
+	int sensorFrequency_;
 
 	bool autopilotActive_;
 };
 
-#endif // XPLANEROSNODE_H
+#endif /* XPLANEROSNODE_H */
