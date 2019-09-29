@@ -146,7 +146,7 @@ WidgetXPlane::onWindLayerIndexChanged(int index)
 }
 
 void
-WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
+WidgetXPlane::onXPlaneSensorData(const simulation_interface::sensor_data& sensorData)
 {
 	std::unique_lock<std::mutex> editLock(editMutex_);
 	if (edit_)
@@ -171,9 +171,9 @@ WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 	frameIndex = frameIndex_;
 	frameIndexLock.unlock();
 
-	if (frameIndex == 1)
+	if (frameIndex == 0)
 	{
-		changeFrame(localFrame_, InertialFrame(), sensorDataAP);
+		changeFrame(InertialFrame(), localFrame_, sensorDataAP);
 	}
 
 	string = QString::fromStdString(
@@ -328,8 +328,8 @@ WidgetXPlane::connectInterface(std::shared_ptr<IWidgetInterface> interface)
 	}
 	if (auto ds = interface->getIDataSignals().get())
 	{
-		QObject::connect(ds.get(), SIGNAL(onSensorData(const simulation_interface::sensor_data&)),
-				this, SLOT(onSensorData(const simulation_interface::sensor_data&)));
+		QObject::connect(ds.get(), SIGNAL(onXPlaneSensorData(const simulation_interface::sensor_data&)),
+				this, SLOT(onXPlaneSensorData(const simulation_interface::sensor_data&)));
 		QObject::connect(ds.get(), SIGNAL(onLocalFrame(const VehicleOneFrame&)), this,
 				SLOT(onLocalFrame(const VehicleOneFrame&)));
 	}

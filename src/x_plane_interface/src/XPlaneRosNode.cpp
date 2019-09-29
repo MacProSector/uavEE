@@ -29,6 +29,7 @@
 #include <uavAP/Core/Scheduler/IScheduler.h>
 #include <uavAP/Core/Logging/APLogger.h>
 #include <simulation_interface/sensor_data.h>
+#include <simulation_interface/wind_layer.h>
 
 #include "xPlane/CHeaders/XPLM/XPLMDefs.h"
 #include "xPlane/CHeaders/XPLM/XPLMDataAccess.h"
@@ -79,8 +80,8 @@ XPlaneRosNode::run(RunStage stage)
 	{
 		ros::NodeHandle nh;
 
-		sensorDataPublisher_ = nh.advertise<simulation_interface::sensor_data>("sensor_data", 20);
-		actuationSubscriber_ = nh.subscribe("actuation", 20, &XPlaneRosNode::setActuationData,
+		sensorDataPublisher_ = nh.advertise<simulation_interface::sensor_data>("/x_plane_interface/sensor_data", 20);
+		actuationSubscriber_ = nh.subscribe("/autopilot_interface/actuation", 20, &XPlaneRosNode::setActuationData,
 				this);
 
 		auto scheduler = scheduler_.get();
@@ -181,6 +182,33 @@ XPlaneRosNode::setDataRefs()
 	rudderLevelRef_ = XPLMFindDataRef("sim/flightmodel/controls/vstab1_rud1def");
 	throttleLevelRef_ = XPLMFindDataRef("sim/flightmodel/engine/ENGN_thro_use");
 
+	windAltitudeRef_[0] = XPLMFindDataRef("sim/weather/wind_altitude_msl_m[0]");
+	windAltitudeRef_[1] = XPLMFindDataRef("sim/weather/wind_altitude_msl_m[1]");
+	windAltitudeRef_[2] = XPLMFindDataRef("sim/weather/wind_altitude_msl_m[2]");
+
+	windDirectionRef_[0] = XPLMFindDataRef("sim/weather/wind_direction_degt[0]");
+	windDirectionRef_[1] = XPLMFindDataRef("sim/weather/wind_direction_degt[1]");
+	windDirectionRef_[2] = XPLMFindDataRef("sim/weather/wind_direction_degt[2]");
+
+	windSpeedRef_[0] = XPLMFindDataRef("sim/weather/wind_speed_kt[0]");
+	windSpeedRef_[1] = XPLMFindDataRef("sim/weather/wind_speed_kt[1]");
+	windSpeedRef_[2] = XPLMFindDataRef("sim/weather/wind_speed_kt[2]");
+
+	windTurbulenceRef_[0] = XPLMFindDataRef("sim/weather/turbulence[0]");
+	windTurbulenceRef_[1] = XPLMFindDataRef("sim/weather/turbulence[1]");
+	windTurbulenceRef_[2] = XPLMFindDataRef("sim/weather/turbulence[2]");
+
+	windShearDirectionRef_[0] = XPLMFindDataRef("sim/weather/shear_direction_degt[0]");
+	windShearDirectionRef_[1] = XPLMFindDataRef("sim/weather/shear_direction_degt[1]");
+	windShearDirectionRef_[2] = XPLMFindDataRef("sim/weather/shear_direction_degt[2]");
+
+	windShearSpeedRef_[0] = XPLMFindDataRef("sim/weather/shear_speed_kt[0]");
+	windShearSpeedRef_[1] = XPLMFindDataRef("sim/weather/shear_speed_kt[1]");
+	windShearSpeedRef_[2] = XPLMFindDataRef("sim/weather/shear_speed_kt[2]");
+
+	activeWindDirectionRef_ = XPLMFindDataRef("sim/weather/wind_heading_deg_mag");
+	activeWindSpeedRef_ = XPLMFindDataRef("sim/weather/wind_speed_kts");
+
 	actuationRef_[0] = XPLMFindDataRef("sim/joystick/yoke_roll_ratio");
 	actuationRef_[1] = XPLMFindDataRef("sim/joystick/yoke_pitch_ratio");
 	actuationRef_[2] = XPLMFindDataRef("sim/joystick/yoke_heading_ratio");
@@ -267,6 +295,30 @@ XPlaneRosNode::publishSensorData()
 	sensorData.elevator_level = static_cast<double>(XPLMGetDataf(elevatorLevelRef_));
 	sensorData.rudder_level = static_cast<double>(XPLMGetDataf(rudderLevelRef_));
 	sensorData.throttle_level = throttleLevel[0];
+
+	sensorData.wind_layers.push_back(simulation_interface::wind_layer());
+	sensorData.wind_layers.push_back(simulation_interface::wind_layer());
+	sensorData.wind_layers.push_back(simulation_interface::wind_layer());
+
+	for (unsigned i = 0; i < 3; i++)
+	{
+		sensorData.wind_layers[i].wind_altitude = static_cast<double>(XPLMGetDataf(
+				windAltitudeRef_[i]));
+		sensorData.wind_layers[i].wind_direction = degToRad(
+				static_cast<double>(XPLMGetDataf(windDirectionRef_[i])) * -1 + 90);
+		sensorData.wind_layers[i].wind_speed = static_cast<double>(XPLMGetDataf(windSpeedRef_[i]))
+				/ 1.944;
+		sensorData.wind_layers[i].wind_turbulence = static_cast<double>(XPLMGetDataf(
+				windTurbulenceRef_[i])) / 10;
+		sensorData.wind_layers[i].wind_shear_direction = degToRad(
+				static_cast<double>(XPLMGetDataf(windShearDirectionRef_[i])) * -1 + 90);
+		sensorData.wind_layers[i].wind_shear_speed = static_cast<double>(XPLMGetDataf(
+				windShearSpeedRef_[i])) / 1.944;
+		sensorData.wind_layers[i].active_wind_direction = degToRad(
+				static_cast<double>(XPLMGetDataf(activeWindDirectionRef_)) * -1 + 90);
+		sensorData.wind_layers[i].active_wind_speed = static_cast<double>(XPLMGetDataf(
+				activeWindSpeedRef_)) / 1.944;
+	}
 
 	sensorDataPublisher_.publish(sensorData);
 

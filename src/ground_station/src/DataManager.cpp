@@ -72,6 +72,12 @@ DataManager::addSensorData(const simulation_interface::sensor_data &sd)
 }
 
 void
+DataManager::addXPlaneSensorData(const simulation_interface::sensor_data &sd)
+{
+	emit onXPlaneSensorData(sd);
+}
+
+void
 DataManager::setLocalPlannerStatus(const radio_comm::serialized_proto& status)
 {
 	LocalPlannerStatus s;
@@ -158,6 +164,8 @@ DataManager::subscribeOnRos()
 	ros::NodeHandle nh;
 	sensorDataSubscriptionRos_ = nh.subscribe("radio_comm/sensor_data", 20,
 			&DataManager::addSensorData, this);
+	sensorDataSubscriptionXPlane_ = nh.subscribe("/x_plane_interface/sensor_data", 20,
+			&DataManager::addXPlaneSensorData, this);
 	trajectorySubscriptionRos_ = nh.subscribe("radio_comm/trajectory", 20, &DataManager::setPath,
 			this);
 	missionSubscriptionRos_ = nh.subscribe("radio_comm/mission", 20, &DataManager::setMission,

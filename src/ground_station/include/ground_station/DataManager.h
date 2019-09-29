@@ -98,6 +98,9 @@ signals:
 	onSensorData(const simulation_interface::sensor_data&) override;
 
 	void
+	onXPlaneSensorData(const simulation_interface::sensor_data&) override;
+
+	void
 	onMission(const Mission&) override;
 
 	void
@@ -153,6 +156,15 @@ private:
 	 */
 	void
 	addSensorData(const simulation_interface::sensor_data &sd);
+
+	/**
+	 * @brief addXPlaneSensorData is the handler function of onXPlaneSensorData. It sets the
+	 * member sensor data to the new received sensor data and signals all the
+	 * widgets subscribed to onXPlaneSensorData
+	 * @param sd is the received sensor data
+	 */
+	void
+	addXPlaneSensorData(const simulation_interface::sensor_data &sd);
 
 	/**
 	 * @brief setLocalPlannerStatus handles onLocalPlannerStatus. It sets the
@@ -220,6 +232,9 @@ private:
 
 	///! subscription to incoming ROS sensor data messages
 	ros::Subscriber sensorDataSubscriptionRos_;
+
+	///! subscription to incoming X-Plane sensor data messages
+	ros::Subscriber sensorDataSubscriptionXPlane_;
 
 	///! subscription to incoming ROS trajectory messages
 	ros::Subscriber trajectorySubscriptionRos_;

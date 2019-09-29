@@ -82,7 +82,7 @@ public slots:
 	onWindLayerIndexChanged(int index);
 
 	void
-	onSensorData(const simulation_interface::sensor_data& sensorData);
+	onXPlaneSensorData(const simulation_interface::sensor_data& sensorData);
 
 	void
 	onLocalFrame(const VehicleOneFrame& localFrame);
