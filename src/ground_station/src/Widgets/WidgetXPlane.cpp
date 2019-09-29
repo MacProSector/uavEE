@@ -128,6 +128,7 @@ WidgetXPlane::onSensorData(const simulation_interface::sensor_data& sensorData)
 	if (!sensorDataActive_)
 	{
 		sensorDataActive_ = true;
+		setText("-");
 	}
 
 	std::string printFormat = "%10.5f";
