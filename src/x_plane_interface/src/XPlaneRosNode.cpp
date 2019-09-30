@@ -28,7 +28,6 @@
 #include <uavAP/Core/LinearAlgebra.h>
 #include <uavAP/Core/Scheduler/IScheduler.h>
 #include <uavAP/Core/Logging/APLogger.h>
-#include <simulation_interface/sensor_data.h>
 #include <simulation_interface/wind_layer.h>
 
 #include "xPlane/CHeaders/XPLM/XPLMDefs.h"
@@ -80,9 +79,12 @@ XPlaneRosNode::run(RunStage stage)
 	{
 		ros::NodeHandle nh;
 
-		sensorDataPublisher_ = nh.advertise<simulation_interface::sensor_data>("/x_plane_interface/sensor_data", 20);
-		actuationSubscriber_ = nh.subscribe("/autopilot_interface/actuation", 20, &XPlaneRosNode::setActuationData,
-				this);
+		sensorDataPublisher_ = nh.advertise<simulation_interface::sensor_data>(
+				"/x_plane_interface/sensor_data", 20);
+		sensorDataSubscriber_ = nh.subscribe("/ground_station/sensor_data", 20,
+				&XPlaneRosNode::setSensorData, this);
+		actuationSubscriber_ = nh.subscribe("/autopilot_interface/actuation", 20,
+				&XPlaneRosNode::setActuationData, this);
 
 		auto scheduler = scheduler_.get();
 
@@ -323,6 +325,21 @@ XPlaneRosNode::publishSensorData()
 	sensorDataPublisher_.publish(sensorData);
 
 	ros::spinOnce();
+}
+
+void
+XPlaneRosNode::setSensorData(const simulation_interface::sensor_data& sensorData)
+{
+	if (sensorData.autopilot_active)
+	{
+		enableAutopilot();
+	}
+	else
+	{
+		disableAutopilot();
+	}
+
+	// TODO Add all other sensor data
 }
 
 void

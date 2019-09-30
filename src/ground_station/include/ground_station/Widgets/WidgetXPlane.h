@@ -23,11 +23,13 @@
 #include <memory>
 #include <mutex>
 #include <QWidget>
+#include <QLineEdit>
+#include <uavAP/Core/Object/ObjectHandle.h>
 #include <uavAP/Core/Frames/VehicleOneFrame.h>
 #include <simulation_interface/sensor_data.h>
 
+class IConfigManager;
 class IWidgetInterface;
-class VehicleOneFrame;
 
 namespace Ui
 {
@@ -91,7 +93,9 @@ private:
 
 	void
 	connectInterface(std::shared_ptr<IWidgetInterface> interface);
-	Ui::WidgetXPlane* ui;
+
+	void
+	readText(double& sensorData, const QLineEdit* lineEdit);
 
 	void
 	setText(const QString& text);
@@ -104,6 +108,10 @@ private:
 
 	void
 	clear();
+
+	Ui::WidgetXPlane* ui;
+
+	ObjectHandle<IConfigManager> configManager_;
 
 	QString disabledStyle_;
 	QString enabledStyle_;

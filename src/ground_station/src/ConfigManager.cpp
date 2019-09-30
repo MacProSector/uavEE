@@ -208,6 +208,9 @@ ConfigManager::run(RunStage stage)
 				"/radio_comm/send_advanced_control");
 		localFrameService_ = nh.serviceClient<radio_comm::serialized_service>(
 				"/radio_comm/send_local_frame");
+
+		sensorDataPublisherGroundStation_ = nh.advertise<simulation_interface::sensor_data>(
+				"/ground_station/sensor_data", 20);
 		break;
 	}
 	case RunStage::FINAL:
@@ -313,6 +316,12 @@ ConfigManager::sendLocalFrame(const VehicleOneFrame& frame)
 	radio_comm::serialized_service ser;
 	ser.request.serialized = dp::serialize(frame).getBuffer();
 	return localFrameService_.call(ser);
+}
+
+void
+ConfigManager::publishGroundStationSensorData(const simulation_interface::sensor_data& sensorData)
+{
+	sensorDataPublisherGroundStation_.publish(sensorData);
 }
 
 void

@@ -144,6 +144,9 @@ public:
 	bool
 	sendMission(const std::string& mission) override;
 
+	void
+	publishGroundStationSensorData(const simulation_interface::sensor_data& sensorData) override;
+
 	/**
 	 * @brief   startFDAQ starts autopilot data logging
 	 * @return  true if request was recieved
@@ -231,6 +234,9 @@ private:
 
 	///! ROS service called to request a local frame
 	ros::ServiceClient localFrameService_;
+
+	///! publication for ground station sensor data
+	ros::Publisher sensorDataPublisherGroundStation_;
 };
 
 #endif // CONFIGMANAGER_H

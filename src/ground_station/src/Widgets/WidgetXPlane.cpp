@@ -28,6 +28,7 @@
 
 #include "ui_WidgetXPlane.h"
 #include "ground_station/Widgets/WidgetXPlane.h"
+#include "ground_station/IConfigManager.h"
 #include "ground_station/IDataSignals.h"
 #include "ground_station/IWidgetInterface.h"
 
@@ -114,11 +115,29 @@ void
 WidgetXPlane::on_apply_clicked()
 {
 	std::unique_lock<std::mutex> lock(editMutex_);
-	if (edit_)
+	if (!edit_)
 	{
-		setEdit(false);
+		return;
 	}
+
+	simulation_interface::sensor_data sensorData;
+
+	sensorData.autopilot_active = autopilotActive_;
+
+	// TODO Add all other sensor data
+
+	setEdit(false);
 	lock.unlock();
+
+	auto configManager = configManager_.get();
+
+	if (!configManager)
+	{
+		APLOG_ERROR << "WidgetXPlane: configuration manager missing.";
+		return;
+	}
+
+	configManager->publishGroundStationSensorData(sensorData);
 }
 
 void
@@ -326,16 +345,48 @@ WidgetXPlane::connectInterface(std::shared_ptr<IWidgetInterface> interface)
 		APLOG_WARN << "WidgetXPlane: Interface Missing.";
 		return;
 	}
+
+	if (!interface->getConfigManager().isSet())
+	{
+		APLOG_ERROR << "WidgetXPlane: configuration manager missing.";
+		return;
+	}
+
+	configManager_.set(interface->getConfigManager().get());
+
+	if (!configManager_.isSet())
+	{
+		APLOG_ERROR << "WidgetXPlane: configuration manager missing.";
+		return;
+	}
+
 	if (auto ds = interface->getIDataSignals().get())
 	{
-		QObject::connect(ds.get(), SIGNAL(onXPlaneSensorData(const simulation_interface::sensor_data&)),
-				this, SLOT(onXPlaneSensorData(const simulation_interface::sensor_data&)));
+		QObject::connect(ds.get(),
+				SIGNAL(onXPlaneSensorData(const simulation_interface::sensor_data&)), this,
+				SLOT(onXPlaneSensorData(const simulation_interface::sensor_data&)));
 		QObject::connect(ds.get(), SIGNAL(onLocalFrame(const VehicleOneFrame&)), this,
 				SLOT(onLocalFrame(const VehicleOneFrame&)));
 	}
 	else
 	{
 		APLOG_ERROR << "WidgetXPlane: IDataSignals Missing.";
+	}
+}
+
+void
+WidgetXPlane::readText(double& sensorData, const QLineEdit* lineEdit)
+{
+	bool valid = false;
+	double result = lineEdit->text().toDouble(&valid);
+
+	if (valid)
+	{
+		sensorData = result;
+	}
+	else
+	{
+		sensorData = std::numeric_limits<double>::quiet_NaN();
 	}
 }
 

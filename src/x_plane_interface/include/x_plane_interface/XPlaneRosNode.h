@@ -30,6 +30,7 @@
 #include <ros/ros.h>
 #include <uavAP/Core/Object/ObjectHandle.h>
 #include <uavAP/Core/Object/IAggregatableObject.h>
+#include <simulation_interface/sensor_data.h>
 #include <simulation_interface/actuation.h>
 
 #include "xPlane/CHeaders/XPLM/XPLMDataAccess.h"
@@ -67,6 +68,9 @@ private:
 	setDataRefs();
 
 	void
+	setSensorData(const simulation_interface::sensor_data& sensorData);
+
+	void
 	setActuationData(const simulation_interface::actuation& actuation);
 
 	void
@@ -75,6 +79,7 @@ private:
 	ObjectHandle<IScheduler> scheduler_;
 
 	ros::Publisher sensorDataPublisher_;
+	ros::Subscriber sensorDataSubscriber_;
 	ros::Subscriber actuationSubscriber_;
 
 	XPLMDataRef positionRefs_[3];
