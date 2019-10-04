@@ -127,7 +127,8 @@ add_xplane_plugin(xplane_ros_plugin 3 xplane_ros_plugin.cpp
                                         src/XPlaneRosNode.cpp)
 
 target_link_libraries(xplane_ros_plugin ${catkin_LIBRARIES}
-                                        uavap_core)
+                                        uavap_core
+                                        ap_ext)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

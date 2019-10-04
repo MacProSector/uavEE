@@ -1,3 +1,4 @@
+float64 wind_layer_index
 float64 wind_altitude
 float64 wind_direction
 float64 wind_speed

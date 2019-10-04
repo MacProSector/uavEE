@@ -95,6 +95,9 @@ private:
 	connectInterface(std::shared_ptr<IWidgetInterface> interface);
 
 	void
+	toInertialFrame(simulation_interface::sensor_data& sensorData);
+
+	void
 	readText(double& sensorData, const QLineEdit* lineEdit);
 
 	void
@@ -117,9 +120,13 @@ private:
 	QString enabledStyle_;
 	QString enabledStyleButton_;
 
-	bool gpsFix_;
-	bool autopilotActive_;
+	unsigned gpsFix_;
+	unsigned autopilotActive_;
 	bool sensorDataActive_;
+
+	bool lastGPSFix_;
+	bool lastAutopilotActive_;
+	std::mutex lastMutex_;
 
 	bool edit_;
 	std::mutex editMutex_;

@@ -24,7 +24,7 @@
  */
 
 #include <cmath>
-#include <uavAP/API/ap_ext/latLongToUTM.h>
+#include <uavAP/API/ap_ext/UTM.h>
 #include <uavAP/Core/LinearAlgebra.h>
 #include <uavAP/Core/Scheduler/IScheduler.h>
 #include <uavAP/Core/Logging/APLogger.h>
@@ -38,7 +38,7 @@
 XPlaneRosNode::XPlaneRosNode() :
 		sequenceNr_(0), sensorFrequency_(100), autopilotActive_(false)
 {
-	setDataRefs();
+	getDataRefs();
 }
 
 XPlaneRosNode::~XPlaneRosNode()
@@ -133,21 +133,25 @@ XPlaneRosNode::disableAutopilot()
 		std::cout << "XPlaneRosNode: Autopilot Off." << std::endl;
 	}
 
-	/* TEST */
-	double x, y, z;
-	XPLMWorldToLocal(40.05, -88.50, 2000, &x, &y, &z);
-	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_x"), x);
-	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_y"), y);
-	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_z"), z);
-	/* TEST */
+//	/* TEST */
+//	double x, y, z;
+//	XPLMWorldToLocal(40.05, -88.50, 2000, &x, &y, &z);
+//	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_x"), x);
+//	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_y"), y);
+//	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_z"), z);
+//	/* TEST */
 }
 
 void
-XPlaneRosNode::setDataRefs()
+XPlaneRosNode::getDataRefs()
 {
 	positionRefs_[0] = XPLMFindDataRef("sim/flightmodel/position/latitude");
 	positionRefs_[1] = XPLMFindDataRef("sim/flightmodel/position/longitude");
 	positionRefs_[2] = XPLMFindDataRef("sim/flightmodel/position/elevation");
+
+	positionLocalRefs_[0] = XPLMFindDataRef("sim/flightmodel/position/local_x");
+	positionLocalRefs_[1] = XPLMFindDataRef("sim/flightmodel/position/local_y");
+	positionLocalRefs_[2] = XPLMFindDataRef("sim/flightmodel/position/local_z");
 
 	velocityRefs_[0] = XPLMFindDataRef("sim/flightmodel/position/local_vx");
 	velocityRefs_[1] = XPLMFindDataRef("sim/flightmodel/position/local_vy");
@@ -217,16 +221,40 @@ XPlaneRosNode::setDataRefs()
 }
 
 void
+XPlaneRosNode::setDataRef(const XPLMDataRef& dataRef, const double& data)
+{
+	if (!std::isnan(data))
+	{
+		XPLMSetDatad(dataRef, data);
+	}
+}
+
+void
+XPlaneRosNode::setDataRef(const XPLMDataRef& dataRef, const float& data)
+{
+	if (!std::isnan(data))
+	{
+		XPLMSetDataf(dataRef, data);
+	}
+}
+
+void
+XPlaneRosNode::setDataRef(const XPLMDataRef& dataRef, const int& data)
+{
+	if (!std::isnan(data))
+	{
+		XPLMSetDatai(dataRef, data);
+	}
+}
+
+void
 XPlaneRosNode::publishSensorData()
 {
-	double yaw_angle_unbounded = 0;
 	double latitude = XPLMGetDatad(positionRefs_[0]);
 	double longitude = XPLMGetDatad(positionRefs_[1]);
-	double altitude = XPLMGetDatad(positionRefs_[2]);
-	double northing = 0;
 	double easting = 0;
-	int zone = 0;
-	char hemi = 'N';
+	double northing = 0;
+	double yawAngleUnbounded = 0;
 	float batteryVoltage[8];
 	float batteryCurrent[8];
 	float motorSpeed[8];
@@ -236,14 +264,14 @@ XPlaneRosNode::publishSensorData()
 	Vector3 accelerationBody;
 	Eigen::Matrix3d rotationMatrix;
 
-	latLongToUTM(latitude, longitude, northing, easting, zone, hemi);
+	LatLonToUTMXY(latitude, longitude, 0, easting, northing);
 
 	sensorData.sequenceNr = sequenceNr_++;
 	sensorData.header.stamp = ros::Time::now();
 
 	sensorData.position.x = easting;
 	sensorData.position.y = northing;
-	sensorData.position.z = altitude;
+	sensorData.position.z = XPLMGetDatad(positionRefs_[2]);
 
 	sensorData.velocity.linear.x = static_cast<double>(XPLMGetDataf(velocityRefs_[0]));
 	sensorData.velocity.linear.y = static_cast<double>(XPLMGetDataf(velocityRefs_[2])) * -1;
@@ -265,10 +293,10 @@ XPlaneRosNode::publishSensorData()
 	sensorData.acceleration.linear.y = accelerationBody[1];
 	sensorData.acceleration.linear.z = accelerationBody[2];
 
-	yaw_angle_unbounded = degToRad(static_cast<double>(XPLMGetDataf(attitudeRefs_[2])));
+	yawAngleUnbounded = degToRad(static_cast<double>(XPLMGetDataf(attitudeRefs_[2])));
 	sensorData.attitude.x = degToRad(static_cast<double>(XPLMGetDataf(attitudeRefs_[0])));
 	sensorData.attitude.y = degToRad(static_cast<double>(XPLMGetDataf(attitudeRefs_[1])));
-	sensorData.attitude.z = boundAngleRad((yaw_angle_unbounded - M_PI / 2) * -1);
+	sensorData.attitude.z = boundAngleRad((yawAngleUnbounded - M_PI / 2) * -1);
 
 	sensorData.angle_of_attack = degToRad(static_cast<double>(XPLMGetDataf(angleOfAttackRef_)));
 	sensorData.angle_of_sideslip = degToRad(static_cast<double>(XPLMGetDataf(angleOfSideslipRef_)));
@@ -307,6 +335,7 @@ XPlaneRosNode::publishSensorData()
 
 	for (unsigned i = 0; i < 3; i++)
 	{
+		sensorData.wind_layers[i].wind_layer_index = static_cast<double>(i);
 		sensorData.wind_layers[i].wind_altitude = static_cast<double>(XPLMGetDataf(
 				windAltitudeRef_[i]));
 		sensorData.wind_layers[i].wind_direction = degToRad(
@@ -330,6 +359,29 @@ XPlaneRosNode::publishSensorData()
 void
 XPlaneRosNode::setSensorData(const simulation_interface::sensor_data& sensorData)
 {
+	double latitude = 0;
+	double longitude = 0;
+	double easting = sensorData.position.x;
+	double northing = sensorData.position.y;
+	double position_local_x = 0;
+	double position_local_y = 0;
+	double position_local_z = 0;
+
+	UTMXYToLatLon(easting, northing, 16, false, latitude, longitude);
+	latitude = radToDeg(latitude);
+	longitude = radToDeg(longitude);
+
+	XPLMWorldToLocal(latitude, longitude, sensorData.position.z, &position_local_x,
+			&position_local_y, &position_local_z);
+
+	setDataRef(positionLocalRefs_[0], position_local_x);
+	setDataRef(positionLocalRefs_[1], position_local_y);
+	setDataRef(positionLocalRefs_[2], position_local_z);
+
+	setDataRef(velocityRefs_[0], static_cast<float>(sensorData.velocity.linear.x));
+	setDataRef(velocityRefs_[2], static_cast<float>(sensorData.velocity.linear.y * -1));
+	setDataRef(velocityRefs_[1], static_cast<float>(sensorData.velocity.linear.z));
+
 	if (sensorData.autopilot_active)
 	{
 		enableAutopilot();

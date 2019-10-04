@@ -65,7 +65,16 @@ public:
 private:
 
 	void
-	setDataRefs();
+	getDataRefs();
+
+	void
+	setDataRef(const XPLMDataRef& dataRef, const double& data);
+
+	void
+	setDataRef(const XPLMDataRef& dataRef, const float& data);
+
+	void
+	setDataRef(const XPLMDataRef& dataRef, const int& data);
 
 	void
 	setSensorData(const simulation_interface::sensor_data& sensorData);
@@ -83,6 +92,7 @@ private:
 	ros::Subscriber actuationSubscriber_;
 
 	XPLMDataRef positionRefs_[3];
+	XPLMDataRef positionLocalRefs_[3];
 	XPLMDataRef velocityRefs_[3];
 	XPLMDataRef airSpeedRef_;
 	XPLMDataRef accelerationRefs_[3];
