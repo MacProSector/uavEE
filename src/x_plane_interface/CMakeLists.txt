@@ -10,6 +10,7 @@ add_compile_options(-std=c++11 -fPIC -fno-stack-protector)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   simulation_interface
+  radio_comm
 )
 
 include(xplane.cmake)

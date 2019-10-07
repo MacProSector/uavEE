@@ -147,6 +147,9 @@ public:
 	virtual bool
 	sendLocalFrame(const VehicleOneFrame& frame) = 0;
 
+	virtual bool
+	engine(const bool& start) = 0;
+
 	virtual void
 	publishGroundStationSensorData(const simulation_interface::sensor_data& sensorData) = 0;
 

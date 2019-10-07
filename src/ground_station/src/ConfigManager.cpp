@@ -33,6 +33,7 @@
 #include <uavAP/FlightAnalysis/SteadyStateAnalysis/SteadyStateAnalysis.h>
 #include <uavAP/Core/Frames/VehicleOneFrame.h>
 #include <uavAP/Core/DataPresentation/BinarySerialization.hpp>
+#include <radio_comm/engine.h>
 #include <radio_comm/select_mission.h>
 #include <radio_comm/select_maneuver.h>
 #include <radio_comm/serialized_service.h>
@@ -208,7 +209,7 @@ ConfigManager::run(RunStage stage)
 				"/radio_comm/send_advanced_control");
 		localFrameService_ = nh.serviceClient<radio_comm::serialized_service>(
 				"/radio_comm/send_local_frame");
-
+		engineService_ = nh.serviceClient<radio_comm::engine>("/x_plane_interface/engine");
 		sensorDataPublisherGroundStation_ = nh.advertise<simulation_interface::sensor_data>(
 				"/ground_station/sensor_data", 20);
 		break;
@@ -316,6 +317,14 @@ ConfigManager::sendLocalFrame(const VehicleOneFrame& frame)
 	radio_comm::serialized_service ser;
 	ser.request.serialized = dp::serialize(frame).getBuffer();
 	return localFrameService_.call(ser);
+}
+
+bool
+ConfigManager::engine(const bool& start)
+{
+	radio_comm::engine engineService;
+	engineService.request.start = start;
+	return engineService_.call(engineService);
 }
 
 void

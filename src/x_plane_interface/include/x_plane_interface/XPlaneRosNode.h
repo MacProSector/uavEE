@@ -27,9 +27,11 @@
 #define XPLANEROSNODE_H
 
 #include <boost/property_tree/ptree.hpp>
+#include <mutex>
 #include <ros/ros.h>
 #include <uavAP/Core/Object/ObjectHandle.h>
 #include <uavAP/Core/Object/IAggregatableObject.h>
+#include <radio_comm/engine.h>
 #include <simulation_interface/sensor_data.h>
 #include <simulation_interface/actuation.h>
 
@@ -71,6 +73,12 @@ public:
 private:
 
 	void
+	engineStart();
+
+	bool
+	engine(radio_comm::engine::Request& request, radio_comm::engine::Response& response);
+
+	void
 	getDataRefs();
 
 	void
@@ -81,6 +89,9 @@ private:
 
 	void
 	setDataRef(const XPLMDataRef& dataRef, float* data, int size);
+
+	void
+	setDataRef(const XPLMDataRef& dataRef, int* data, int size);
 
 	void
 	setDataRef(const XPLMDataRef& dataRef, const int& data);
@@ -99,6 +110,7 @@ private:
 	ros::Publisher sensorDataPublisher_;
 	ros::Subscriber sensorDataSubscriber_;
 	ros::Subscriber actuationSubscriber_;
+	ros::ServiceServer engineService_;
 
 	XPLMDataRef positionRefs_[3];
 	XPLMDataRef positionLocalRefs_[3];
@@ -127,6 +139,7 @@ private:
 	XPLMDataRef windShearSpeedRef_[3];
 	XPLMDataRef joystickOverrideRef_[2];
 	XPLMDataRef actuationRef_[3];
+	XPLMDataRef ignitionKeyRef_;
 
 	unsigned int sequenceNr_;
 	int sensorFrequency_;

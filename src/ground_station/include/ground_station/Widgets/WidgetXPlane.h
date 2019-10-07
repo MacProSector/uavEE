@@ -60,6 +60,12 @@ public:
 public slots:
 
 	void
+	on_engineStartValue_clicked();
+
+	void
+	on_engineStopValue_clicked();
+
+	void
 	on_gpsFixValue_clicked();
 
 	void
@@ -76,9 +82,6 @@ public slots:
 
 	void
 	onFrameIndexChanged(int index);
-
-	void
-	onEngineIndexChanged(int index);
 
 	void
 	onWindLayerIndexChanged(int index);
@@ -133,9 +136,6 @@ private:
 
 	int frameIndex_;
 	std::mutex frameIndexMutex_;
-
-	int engineIndex_;
-	std::mutex engineIndexMutex_;
 
 	int windLayerIndex_;
 	std::mutex windLayerIndexMutex_;

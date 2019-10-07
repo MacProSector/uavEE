@@ -144,6 +144,9 @@ public:
 	bool
 	sendMission(const std::string& mission) override;
 
+	bool
+	engine(const bool& start) override;
+
 	void
 	publishGroundStationSensorData(const simulation_interface::sensor_data& sensorData) override;
 
@@ -234,6 +237,9 @@ private:
 
 	///! ROS service called to request a local frame
 	ros::ServiceClient localFrameService_;
+
+	///! ROS service called to start or stop aircraft engine in X-Plane
+	ros::ServiceClient engineService_;
 
 	///! publication for ground station sensor data
 	ros::Publisher sensorDataPublisherGroundStation_;

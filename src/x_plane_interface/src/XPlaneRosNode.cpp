@@ -24,6 +24,7 @@
  */
 
 #include <cmath>
+#include <thread>
 #include <uavAP/API/ap_ext/UTM.h>
 #include <uavAP/Core/LinearAlgebra.h>
 #include <uavAP/Core/Scheduler/IScheduler.h>
@@ -85,6 +86,8 @@ XPlaneRosNode::run(RunStage stage)
 				&XPlaneRosNode::setSensorData, this);
 		actuationSubscriber_ = nh.subscribe("/autopilot_interface/actuation", 20,
 				&XPlaneRosNode::setActuationData, this);
+		engineService_ = nh.advertiseService("/x_plane_interface/engine", &XPlaneRosNode::engine,
+				this);
 
 		auto scheduler = scheduler_.get();
 
@@ -154,6 +157,43 @@ XPlaneRosNode::disableAutopilot()
 //	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_y"), y);
 //	XPLMSetDatad(XPLMFindDataRef("sim/flightmodel/position/local_z"), z);
 //	/* TEST */
+}
+
+void
+XPlaneRosNode::engineStart()
+{
+	int ignitionKeyValue = 4;
+	int ignitionKey[] =
+	{ ignitionKeyValue, ignitionKeyValue, ignitionKeyValue, ignitionKeyValue, ignitionKeyValue,
+			ignitionKeyValue, ignitionKeyValue, ignitionKeyValue };
+	TimePoint timestampStart = boost::posix_time::second_clock::local_time();
+	TimePoint timestampCurrent = boost::posix_time::second_clock::local_time();
+
+	while (timestampCurrent - timestampStart <= Seconds(2))
+	{
+		setDataRef(ignitionKeyRef_, ignitionKey, 8);
+		timestampCurrent = boost::posix_time::second_clock::local_time();
+	}
+}
+
+bool
+XPlaneRosNode::engine(radio_comm::engine::Request& request, radio_comm::engine::Response& response)
+{
+	if (request.start)
+	{
+		std::thread engineStartThread(&XPlaneRosNode::engineStart, this);
+		engineStartThread.detach();
+	}
+	else
+	{
+		int ignitionKeyValue = 0;
+		int ignitionKey[] =
+		{ ignitionKeyValue, ignitionKeyValue, ignitionKeyValue, ignitionKeyValue, ignitionKeyValue,
+				ignitionKeyValue, ignitionKeyValue, ignitionKeyValue };
+		setDataRef(ignitionKeyRef_, ignitionKey, 8);
+	}
+
+	return true;
 }
 
 void
@@ -233,6 +273,8 @@ XPlaneRosNode::getDataRefs()
 	actuationRef_[0] = XPLMFindDataRef("sim/joystick/yoke_roll_ratio");
 	actuationRef_[1] = XPLMFindDataRef("sim/joystick/yoke_pitch_ratio");
 	actuationRef_[2] = XPLMFindDataRef("sim/joystick/yoke_heading_ratio");
+
+	ignitionKeyRef_ = XPLMFindDataRef("sim/cockpit2/engine/actuators/ignition_key");
 }
 
 void
@@ -265,6 +307,20 @@ XPlaneRosNode::setDataRef(const XPLMDataRef& dataRef, float* data, int size)
 	}
 
 	XPLMSetDatavf(dataRef, data, 0, size);
+}
+
+void
+XPlaneRosNode::setDataRef(const XPLMDataRef& dataRef, int* data, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (std::isnan(data[i]))
+		{
+			return;
+		}
+	}
+
+	XPLMSetDatavi(dataRef, data, 0, size);
 }
 
 void
@@ -374,7 +430,8 @@ XPlaneRosNode::publishSensorData()
 		sensorData.wind_layers[i].wind_turbulence = static_cast<double>(XPLMGetDataf(
 				windTurbulenceRef_[i])) / 10;
 
-		sensorData.wind_layers[i].wind_shear_direction = degToRad(static_cast<double>(XPLMGetDataf(windShearDirectionRef_[i])));
+		sensorData.wind_layers[i].wind_shear_direction = degToRad(
+				static_cast<double>(XPLMGetDataf(windShearDirectionRef_[i])));
 		sensorData.wind_layers[i].wind_shear_speed = static_cast<double>(XPLMGetDataf(
 				windShearSpeedRef_[i])) / 1.944;
 	}
@@ -413,7 +470,7 @@ XPlaneRosNode::setSensorData(const simulation_interface::sensor_data& sensorData
 	setDataRef(velocityRefs_[1], static_cast<float>(sensorData.velocity.linear.z));
 
 	if (!std::isnan(sensorData.attitude.x) && !std::isnan(sensorData.attitude.y)
-				&& !std::isnan(sensorData.attitude.z))
+			&& !std::isnan(sensorData.attitude.z))
 	{
 		attitude[0] = sensorData.attitude.x;
 		attitude[1] = sensorData.attitude.y;

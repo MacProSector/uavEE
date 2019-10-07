@@ -67,11 +67,11 @@
              <widget class="QLabel" name="timeValue">
               <property name="font">
                <font>
-                <pointsize>7</pointsize>
+                <pointsize>6</pointsize>
                </font>
               </property>
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;N/A&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:6pt;&quot;&gt;N/A&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -149,17 +149,17 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="engineValue">
-              <item>
-               <property name="text">
-                <string>Ignition</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Shutdown</string>
-               </property>
-              </item>
+             <widget class="QPushButton" name="engineStartValue">
+              <property name="text">
+               <string>Start</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="engineStopValue">
+              <property name="text">
+               <string>Stop</string>
+              </property>
              </widget>
             </item>
            </layout>

@@ -35,7 +35,7 @@
 WidgetXPlane::WidgetXPlane(QWidget* parent) :
 		QWidget(parent), ui(new Ui::WidgetXPlane), gpsFix_(0), autopilotActive_(0), lastGPSFix_(
 				false), lastAutopilotActive_(false), sensorDataActive_(false), edit_(true), frameIndex_(
-				0), engineIndex_(0), windLayerIndex_(0)
+				0), windLayerIndex_(0)
 {
 	ui->setupUi(this);
 	ui->gpsFixValue->setFixedSize(ui->yawRateValue->size());
@@ -43,9 +43,6 @@ WidgetXPlane::WidgetXPlane(QWidget* parent) :
 
 	QObject::connect(ui->frameValue, SIGNAL(currentIndexChanged(int)), this,
 			SLOT(onFrameIndexChanged(int)));
-
-	QObject::connect(ui->engineValue, SIGNAL(currentIndexChanged(int)), this,
-			SLOT(onEngineIndexChanged(int)));
 
 	QObject::connect(ui->windLayerValue, SIGNAL(currentIndexChanged(int)), this,
 			SLOT(onWindLayerIndexChanged(int)));
@@ -64,6 +61,34 @@ WidgetXPlane::~WidgetXPlane()
 {
 	APLOG_DEBUG << "WidgetXPlane: Widget Deleted.";
 	delete ui;
+}
+
+void
+WidgetXPlane::on_engineStartValue_clicked()
+{
+	auto configManager = configManager_.get();
+
+	if (!configManager)
+	{
+		APLOG_ERROR << "WidgetXPlane: configuration manager missing.";
+		return;
+	}
+
+	configManager->engine(true);
+}
+
+void
+WidgetXPlane::on_engineStopValue_clicked()
+{
+	auto configManager = configManager_.get();
+
+	if (!configManager)
+	{
+		APLOG_ERROR << "WidgetXPlane: configuration manager missing.";
+		return;
+	}
+
+	configManager->engine(false);
 }
 
 void
@@ -265,14 +290,6 @@ WidgetXPlane::onFrameIndexChanged(int index)
 {
 	std::unique_lock<std::mutex> lock(frameIndexMutex_);
 	frameIndex_ = index;
-	lock.unlock();
-}
-
-void
-WidgetXPlane::onEngineIndexChanged(int index)
-{
-	std::unique_lock<std::mutex> lock(engineIndexMutex_);
-	engineIndex_ = index;
 	lock.unlock();
 }
 
