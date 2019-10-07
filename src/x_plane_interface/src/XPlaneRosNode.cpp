@@ -109,13 +109,27 @@ XPlaneRosNode::run(RunStage stage)
 }
 
 void
+XPlaneRosNode::enableJoystick()
+{
+	XPLMSetDatai(joystickOverrideRef_[0], 0);
+	XPLMSetDatai(joystickOverrideRef_[1], 0);
+}
+
+void
+XPlaneRosNode::disableJoystick()
+{
+	XPLMSetDatai(joystickOverrideRef_[0], 1);
+	XPLMSetDatai(joystickOverrideRef_[1], 1);
+}
+
+void
 XPlaneRosNode::enableAutopilot()
 {
 	if (!autopilotActive_)
 	{
 		autopilotActive_ = true;
-		XPLMSetDatai(autopilotActiveRef_[0], 1);
-		XPLMSetDatai(autopilotActiveRef_[1], 1);
+		XPLMSetDatai(joystickOverrideRef_[0], 1);
+		XPLMSetDatai(joystickOverrideRef_[1], 1);
 
 		std::cout << "XPlaneRosNode: Autopilot On." << std::endl;
 	}
@@ -127,8 +141,8 @@ XPlaneRosNode::disableAutopilot()
 	if (autopilotActive_)
 	{
 		autopilotActive_ = false;
-		XPLMSetDatai(autopilotActiveRef_[0], 0);
-		XPLMSetDatai(autopilotActiveRef_[1], 0);
+		XPLMSetDatai(joystickOverrideRef_[0], 0);
+		XPLMSetDatai(joystickOverrideRef_[1], 0);
 
 		std::cout << "XPlaneRosNode: Autopilot Off." << std::endl;
 	}
@@ -175,8 +189,6 @@ XPlaneRosNode::getDataRefs()
 	angularRateRefs_[2] = XPLMFindDataRef("sim/flightmodel/position/R");
 
 	gpsFixRef_ = XPLMFindDataRef("sim/cockpit2/radios/actuators/gps_power");
-	autopilotActiveRef_[0] = XPLMFindDataRef("sim/operation/override/override_joystick");
-	autopilotActiveRef_[1] = XPLMFindDataRef("sim/operation/override/override_throttles");
 
 	batteryVoltageRef_ = XPLMFindDataRef("sim/flightmodel/engine/ENGN_bat_volt");
 	batteryCurrentRef_ = XPLMFindDataRef("sim/flightmodel/engine/ENGN_bat_amp");
@@ -215,6 +227,9 @@ XPlaneRosNode::getDataRefs()
 	windShearSpeedRef_[1] = XPLMFindDataRef("sim/weather/shear_speed_kt[1]");
 	windShearSpeedRef_[2] = XPLMFindDataRef("sim/weather/shear_speed_kt[2]");
 
+	joystickOverrideRef_[0] = XPLMFindDataRef("sim/operation/override/override_joystick");
+	joystickOverrideRef_[1] = XPLMFindDataRef("sim/operation/override/override_throttles");
+
 	actuationRef_[0] = XPLMFindDataRef("sim/joystick/yoke_roll_ratio");
 	actuationRef_[1] = XPLMFindDataRef("sim/joystick/yoke_pitch_ratio");
 	actuationRef_[2] = XPLMFindDataRef("sim/joystick/yoke_heading_ratio");
@@ -236,6 +251,20 @@ XPlaneRosNode::setDataRef(const XPLMDataRef& dataRef, const float& data)
 	{
 		XPLMSetDataf(dataRef, data);
 	}
+}
+
+void
+XPlaneRosNode::setDataRef(const XPLMDataRef& dataRef, float* data, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (std::isnan(data[i]))
+		{
+			return;
+		}
+	}
+
+	XPLMSetDatavf(dataRef, data, 0, size);
 }
 
 void
@@ -338,15 +367,14 @@ XPlaneRosNode::publishSensorData()
 		sensorData.wind_layers[i].wind_layer_index = static_cast<double>(i);
 		sensorData.wind_layers[i].wind_altitude = static_cast<double>(XPLMGetDataf(
 				windAltitudeRef_[i]));
-		sensorData.wind_layers[i].wind_direction = degToRad(
-				static_cast<double>(XPLMGetDataf(windDirectionRef_[i])) * -1 + 90);
+		sensorData.wind_layers[i].wind_direction = boundAngleRad(
+				degToRad(static_cast<double>(XPLMGetDataf(windDirectionRef_[i]) - 90) * -1));
 		sensorData.wind_layers[i].wind_speed = static_cast<double>(XPLMGetDataf(windSpeedRef_[i]))
 				/ 1.944;
 		sensorData.wind_layers[i].wind_turbulence = static_cast<double>(XPLMGetDataf(
 				windTurbulenceRef_[i])) / 10;
 
-		sensorData.wind_layers[i].wind_shear_direction = degToRad(
-				static_cast<double>(XPLMGetDataf(windShearDirectionRef_[i])) * -1 + 90);
+		sensorData.wind_layers[i].wind_shear_direction = degToRad(static_cast<double>(XPLMGetDataf(windShearDirectionRef_[i])));
 		sensorData.wind_layers[i].wind_shear_speed = static_cast<double>(XPLMGetDataf(
 				windShearSpeedRef_[i])) / 1.944;
 	}
@@ -363,25 +391,67 @@ XPlaneRosNode::setSensorData(const simulation_interface::sensor_data& sensorData
 	double longitude = 0;
 	double easting = sensorData.position.x;
 	double northing = sensorData.position.y;
-	double position_local_x = 0;
-	double position_local_y = 0;
-	double position_local_z = 0;
+	double yawAngleUnbounded = 0;
+	double positionLocalX = 0;
+	double positionLocalY = 0;
+	double positionLocalZ = 0;
+	int windLayerIndex;
+	Vector3 accelerationBody;
+	Vector3 accelerationInertial;
+	Vector3 attitude;
+	Eigen::Matrix3d rotationMatrix;
 
 	UTMXYToLatLon(easting, northing, 16, false, latitude, longitude);
-	latitude = radToDeg(latitude);
-	longitude = radToDeg(longitude);
-
-	XPLMWorldToLocal(latitude, longitude, sensorData.position.z, &position_local_x,
-			&position_local_y, &position_local_z);
-
-	setDataRef(positionLocalRefs_[0], position_local_x);
-	setDataRef(positionLocalRefs_[1], position_local_y);
-	setDataRef(positionLocalRefs_[2], position_local_z);
+	XPLMWorldToLocal(radToDeg(latitude), radToDeg(longitude), sensorData.position.z,
+			&positionLocalX, &positionLocalY, &positionLocalZ);
+	setDataRef(positionLocalRefs_[0], positionLocalX);
+	setDataRef(positionLocalRefs_[1], positionLocalY);
+	setDataRef(positionLocalRefs_[2], positionLocalZ);
 
 	setDataRef(velocityRefs_[0], static_cast<float>(sensorData.velocity.linear.x));
 	setDataRef(velocityRefs_[2], static_cast<float>(sensorData.velocity.linear.y * -1));
 	setDataRef(velocityRefs_[1], static_cast<float>(sensorData.velocity.linear.z));
 
+	if (!std::isnan(sensorData.attitude.x) && !std::isnan(sensorData.attitude.y)
+				&& !std::isnan(sensorData.attitude.z))
+	{
+		attitude[0] = sensorData.attitude.x;
+		attitude[1] = sensorData.attitude.y;
+		attitude[2] = sensorData.attitude.z;
+	}
+	else
+	{
+		yawAngleUnbounded = degToRad(static_cast<double>(XPLMGetDataf(attitudeRefs_[2])));
+		attitude[0] = degToRad(static_cast<double>(XPLMGetDataf(attitudeRefs_[0])));
+		attitude[1] = degToRad(static_cast<double>(XPLMGetDataf(attitudeRefs_[1])));
+		attitude[2] = boundAngleRad((yawAngleUnbounded - M_PI / 2) * -1);
+	}
+	accelerationBody[0] = sensorData.acceleration.linear.x;
+	accelerationBody[1] = sensorData.acceleration.linear.y;
+	accelerationBody[2] = sensorData.acceleration.linear.z;
+	if (!std::isnan(accelerationBody[0]) && !std::isnan(accelerationBody[1])
+			&& !std::isnan(accelerationBody[2]))
+	{
+		rotationMatrix = Eigen::AngleAxisd(attitude[0], Vector3::UnitX() * -1)
+				* Eigen::AngleAxisd(attitude[1], Vector3::UnitY() * -1)
+				* Eigen::AngleAxisd(attitude[2], Vector3::UnitZ() * -1);
+		accelerationInertial = rotationMatrix * accelerationBody;
+		setDataRef(accelerationRefs_[0], static_cast<float>(accelerationInertial[0]));
+		setDataRef(accelerationRefs_[1], static_cast<float>(accelerationInertial[1]));
+		setDataRef(accelerationRefs_[2], static_cast<float>(accelerationInertial[2]));
+	}
+
+	setDataRef(attitudeRefs_[0], static_cast<float>(radToDeg(sensorData.attitude.x)));
+	setDataRef(attitudeRefs_[1], static_cast<float>(radToDeg(sensorData.attitude.y)));
+	setDataRef(attitudeRefs_[2],
+			static_cast<float>(radToDeg(sensorData.attitude.z * -1 + M_PI / 2)));
+
+	setDataRef(angularRateRefs_[0], static_cast<float>(radToDeg(sensorData.velocity.angular.x)));
+	setDataRef(angularRateRefs_[1],
+			static_cast<float>(radToDeg(sensorData.velocity.angular.y * -1)));
+	setDataRef(angularRateRefs_[2], static_cast<float>(radToDeg(sensorData.velocity.angular.z)));
+
+	setDataRef(gpsFixRef_, static_cast<int>(sensorData.gps_fix));
 	if (sensorData.autopilot_active)
 	{
 		enableAutopilot();
@@ -391,7 +461,51 @@ XPlaneRosNode::setSensorData(const simulation_interface::sensor_data& sensorData
 		disableAutopilot();
 	}
 
-	// TODO Add all other sensor data
+	float batteryVoltageValue = static_cast<float>(sensorData.battery_voltage);
+	float batteryCurrentValue = static_cast<float>(sensorData.battery_current) - 24;
+	float batteryVoltage[] =
+	{ batteryVoltageValue, batteryVoltageValue, batteryVoltageValue, batteryVoltageValue,
+			batteryVoltageValue, batteryVoltageValue, batteryVoltageValue, batteryVoltageValue };
+	float batteryCurrent[] =
+	{ batteryCurrentValue, batteryCurrentValue, batteryCurrentValue, batteryCurrentValue,
+			batteryCurrentValue, batteryCurrentValue, batteryCurrentValue, batteryCurrentValue };
+	setDataRef(batteryVoltageRef_, batteryVoltage, 8);
+	setDataRef(batteryCurrentRef_, batteryCurrent, 8);
+
+	float motorSpeedValue = static_cast<float>(sensorData.motor_speed * M_PI * 2 / 60);
+	float motorSpeed[] =
+	{ motorSpeedValue, motorSpeedValue, motorSpeedValue, motorSpeedValue, motorSpeedValue,
+			motorSpeedValue, motorSpeedValue, motorSpeedValue }; // Revolutions per minute to radians per second
+	setDataRef(motorSpeedRef_, motorSpeed, 8);
+
+	float throttleLevelValue = static_cast<float>(sensorData.throttle_level);
+	float throttleLevel[] =
+	{ throttleLevelValue, throttleLevelValue, throttleLevelValue, throttleLevelValue,
+			throttleLevelValue, throttleLevelValue, throttleLevelValue, throttleLevelValue };
+	setDataRef(aileronLevelRef_, static_cast<float>(sensorData.aileron_level));
+	setDataRef(elevatorLevelRef_, static_cast<float>(sensorData.elevator_level));
+	setDataRef(rudderLevelRef_, static_cast<float>(sensorData.rudder_level));
+	setDataRef(throttleLevelRef_, throttleLevel, 8);
+
+	setDataRef(precipitationLevelRef_, static_cast<float>(sensorData.precipitation_level));
+	setDataRef(storminessLevelRef_, static_cast<float>(sensorData.storminess_level));
+
+	if (sensorData.wind_layers.size() > 0)
+	{
+		simulation_interface::wind_layer windLayer = sensorData.wind_layers[0];
+		windLayerIndex = windLayer.wind_layer_index;
+
+		setDataRef(windAltitudeRef_[windLayerIndex], static_cast<float>(windLayer.wind_altitude));
+		setDataRef(windDirectionRef_[windLayerIndex],
+				static_cast<float>(radToDeg(windLayer.wind_direction * -1 + M_PI / 2)));
+		setDataRef(windSpeedRef_[windLayerIndex], static_cast<float>(windLayer.wind_speed * 1.944));
+		setDataRef(windTurbulenceRef_[windLayerIndex],
+				static_cast<float>(windLayer.wind_turbulence * 10));
+		setDataRef(windShearDirectionRef_[windLayerIndex],
+				static_cast<float>(radToDeg(windLayer.wind_shear_direction)));
+		setDataRef(windShearSpeedRef_[windLayerIndex],
+				static_cast<float>(windLayer.wind_shear_speed * 1.944));
+	}
 }
 
 void

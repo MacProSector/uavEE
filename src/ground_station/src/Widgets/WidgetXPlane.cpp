@@ -161,7 +161,7 @@ WidgetXPlane::on_apply_clicked()
 
 	readText(sensorData.attitude.x, ui->rollAngleValue);
 	readText(sensorData.attitude.y, ui->pitchAngleValue);
-	readText(sensorData.attitude.z, ui->rollAngleValue);
+	readText(sensorData.attitude.z, ui->yawAngleValue);
 
 	sensorData.attitude.x = degToRad(sensorData.attitude.x);
 	sensorData.attitude.y = degToRad(sensorData.attitude.y);
@@ -230,7 +230,7 @@ WidgetXPlane::on_apply_clicked()
 	windLayer.wind_layer_index = windLayerIndex;
 	readText(windLayer.wind_altitude, ui->windAltitudeValue);
 	readText(windLayer.wind_direction, ui->windDirectionValue);
-	readText(windLayer.wind_speed, ui->windShearSpeedValue);
+	readText(windLayer.wind_speed, ui->windSpeedValue);
 	readText(windLayer.wind_turbulence, ui->windTurbulenceValue);
 	readText(windLayer.wind_shear_direction, ui->windShearDirectionValue);
 	readText(windLayer.wind_shear_speed, ui->windShearSpeedValue);

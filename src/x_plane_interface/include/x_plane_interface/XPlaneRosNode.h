@@ -57,6 +57,12 @@ public:
 	run(RunStage stage) override;
 
 	void
+	enableJoystick();
+
+	void
+	disableJoystick();
+
+	void
 	enableAutopilot();
 
 	void
@@ -72,6 +78,9 @@ private:
 
 	void
 	setDataRef(const XPLMDataRef& dataRef, const float& data);
+
+	void
+	setDataRef(const XPLMDataRef& dataRef, float* data, int size);
 
 	void
 	setDataRef(const XPLMDataRef& dataRef, const int& data);
@@ -101,7 +110,6 @@ private:
 	XPLMDataRef angleOfSideslipRef_;
 	XPLMDataRef angularRateRefs_[3];
 	XPLMDataRef gpsFixRef_;
-	XPLMDataRef autopilotActiveRef_[2];
 	XPLMDataRef batteryVoltageRef_;
 	XPLMDataRef batteryCurrentRef_;
 	XPLMDataRef motorSpeedRef_;
@@ -117,6 +125,7 @@ private:
 	XPLMDataRef windTurbulenceRef_[3];
 	XPLMDataRef windShearDirectionRef_[3];
 	XPLMDataRef windShearSpeedRef_[3];
+	XPLMDataRef joystickOverrideRef_[2];
 	XPLMDataRef actuationRef_[3];
 
 	unsigned int sequenceNr_;
