@@ -399,7 +399,7 @@ XPlaneRosNode::publishSensorData()
 	XPLMGetDatavf(batteryVoltageRef_, batteryVoltage, 0, 8);
 	XPLMGetDatavf(batteryCurrentRef_, batteryCurrent, 0, 8);
 	sensorData.battery_voltage = batteryVoltage[0];
-	sensorData.battery_current = batteryCurrent[0] + 24;
+	sensorData.battery_current = batteryCurrent[0];
 
 	XPLMGetDatavf(motorSpeedRef_, motorSpeed, 0, 8);
 	motorSpeed[0] = motorSpeed[0] * 60 / M_PI / 2; // Radians per second to revolutions per minute
@@ -519,7 +519,7 @@ XPlaneRosNode::setSensorData(const simulation_interface::sensor_data& sensorData
 	}
 
 	float batteryVoltageValue = static_cast<float>(sensorData.battery_voltage);
-	float batteryCurrentValue = static_cast<float>(sensorData.battery_current) - 24;
+	float batteryCurrentValue = static_cast<float>(sensorData.battery_current);
 	float batteryVoltage[] =
 	{ batteryVoltageValue, batteryVoltageValue, batteryVoltageValue, batteryVoltageValue,
 			batteryVoltageValue, batteryVoltageValue, batteryVoltageValue, batteryVoltageValue };
