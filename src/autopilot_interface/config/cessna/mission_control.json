@@ -8,7 +8,7 @@
 					"yaw_rate": 5,
 					"gliding_velocity": 36,
 					"gliding_climb_angle": -5,
-					"period": 3000
+					"period": 5000
 				},
 				"searching": {
 					"acceleration": 1,
