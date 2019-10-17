@@ -24,10 +24,13 @@
 				},
 				"approaching": {
 					"velocity": 30,
+					"approach_angle": -5.5,
+					"approach_angle_flap": -6.5,
 					"climb_angle": -3,
 					"yaw_angle": 270,
 					"yaw_rate": 5,
 					"sideslip_angle": 0,
+					"runway_align_distance": 30,
 					"position": [0, 0, 0]
 				}
 			}

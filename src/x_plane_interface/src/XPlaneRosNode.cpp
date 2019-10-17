@@ -239,6 +239,7 @@ XPlaneRosNode::getDataRefs()
 	elevatorLevelRef_ = XPLMFindDataRef("sim/flightmodel/controls/hstab1_elv1def");
 	rudderLevelRef_ = XPLMFindDataRef("sim/flightmodel/controls/vstab1_rud1def");
 	throttleLevelRef_ = XPLMFindDataRef("sim/flightmodel/engine/ENGN_thro_use");
+	flapLevelRef_ = XPLMFindDataRef("sim/cockpit2/controls/flap_ratio");
 
 	precipitationLevelRef_ = XPLMFindDataRef("sim/weather/rain_percent");
 	storminessLevelRef_ = XPLMFindDataRef("sim/weather/thunderstorm_percent");
@@ -580,9 +581,11 @@ XPlaneRosNode::setActuationData(const simulation_interface::actuation& actuation
 	float throttle[] =
 	{ throttleValue, throttleValue, throttleValue, throttleValue, throttleValue, throttleValue,
 			throttleValue, throttleValue };
+	float flap = static_cast<float>(actuation.flapOutput);
 
 	XPLMSetDataf(actuationRef_[0], roll);
 	XPLMSetDataf(actuationRef_[1], pitch);
 	XPLMSetDataf(actuationRef_[2], yaw);
 	XPLMSetDatavf(throttleLevelRef_, throttle, 0, 8);
+	XPLMSetDataf(flapLevelRef_, flap);
 }

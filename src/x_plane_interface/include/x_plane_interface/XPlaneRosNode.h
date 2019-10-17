@@ -129,6 +129,7 @@ private:
 	XPLMDataRef elevatorLevelRef_;
 	XPLMDataRef rudderLevelRef_;
 	XPLMDataRef throttleLevelRef_;
+	XPLMDataRef flapLevelRef_;
 	XPLMDataRef precipitationLevelRef_;
 	XPLMDataRef storminessLevelRef_;
 	XPLMDataRef windAltitudeRef_[3];

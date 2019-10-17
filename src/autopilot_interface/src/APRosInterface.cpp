@@ -83,6 +83,7 @@ APRosInterface::onControllerOut(const ControllerOutput& control)
 	actuation.pitchOutput = control.pitchOutput;
 	actuation.yawOutput = control.yawOutput;
 	actuation.throttleOutput = control.throttleOutput;
+	actuation.flapOutput = control.flapOutput;
 	actuation.sequenceNr = control.sequenceNr;
 
 	actuationPublisherRos_.publish(actuation);
