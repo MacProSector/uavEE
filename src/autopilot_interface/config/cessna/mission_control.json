@@ -24,8 +24,9 @@
 				},
 				"approaching": {
 					"velocity": 30,
-					"approach_angle": -5.5,
-					"approach_angle_flap": -6.5,
+					"approach_angle": -3,
+					"approach_angle_min": -6.5,
+					"approach_angle_max": -7.0,
 					"climb_angle": -3,
 					"yaw_angle": 270,
 					"yaw_rate": 5,
