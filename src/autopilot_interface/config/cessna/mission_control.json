@@ -31,7 +31,7 @@
 					"yaw_angle": 270,
 					"yaw_rate": 5,
 					"sideslip_angle": 0,
-					"runway_align_distance": 30,
+					"runway_align_distance": 60,
 					"position": [0, 0, 0]
 				}
 			}
