@@ -57,7 +57,11 @@ apToRos(const SensorData& sd)
 {
 	simulation_interface::sensor_data data;
 
-	data.header.stamp = ros::Time::fromBoost(sd.timestamp);
+	if (!sd.timestamp.is_not_a_date_time())
+	{
+		data.header.stamp = ros::Time::fromBoost(sd.timestamp);
+	}
+
 	data.position = Vector3ToXYZType<geometry_msgs::Point>(sd.position);
 	data.velocity.linear = Vector3ToXYZType<geometry_msgs::Vector3>(sd.velocity);
 	data.velocity.angular = Vector3ToXYZType<geometry_msgs::Vector3>(sd.angularRate);
